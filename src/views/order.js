@@ -150,7 +150,7 @@ export default class Order extends React.Component {
         </StyleProvider>
       );
 
-    const {name, paymentPrice, subjects, aim, executor, paymentStatus} = Globals.order;
+    const {name, price, paymentPrice, subjects, aim, executor, paymentStatus} = Globals.order;
 
     if (Globals.version === CLIENT)
       return (
@@ -164,7 +164,7 @@ export default class Order extends React.Component {
 
               <View style={styles.withPadding}>
                 <H2 style={styles.title2}>Сумма к оплате</H2>
-                <Text style={styles.price}>{paymentPrice} ₽</Text>
+                <Text style={styles.price}>{paymentPrice || price} ₽</Text>
               </View>
 
               <View style={styles.withPadding}>
