@@ -23,6 +23,10 @@ export default class Payment extends Component {
     console.log(e);
   };
 
+  changePriceValue = orderId => {
+    this.setState({orderId, fetchFailed: false});
+  };
+
   getPaymentComponent = type => {
     let typPay;
     switch (type) {
@@ -36,20 +40,14 @@ export default class Payment extends Component {
                 requiresName={true}
                 requiresCVC={true}
               />
-              <View style={styles.formCash}>
-                <Text>Введите сумму оплаты:</Text>
-                <Input placeholder="сумма" />
-                <Button
-                  key={type}
-                  block
-                  transparent
-                  dark
-                  style={styles.button}
-                  onPress={this.goToPayment}
-                >
-                  <Text style={styles.continue}>Продолжить</Text>
-                </Button>
-              </View>
+              <Button
+                key={type}
+                block
+                style={styles.button}
+                onPress={this.goToPayment}
+              >
+                <Text style={styles.continue}>Продолжить</Text>
+              </Button>
             </View>
           );
         }
@@ -83,9 +81,8 @@ export default class Payment extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    height: 46,
+    marginTop: 20,
     width: 250,
-    backgroundColor: 'red',
     alignSelf: 'center',
   },
   continue: {
@@ -94,10 +91,11 @@ const styles = StyleSheet.create({
   title2: {
     paddingBottom: 40,
     fontSize: 20,
-    textAlign: 'center',
+    alignSelf: 'center',
     fontWeight: 'bold',
   },
-  formCash: {
-    alignSelf: 'center',
+  content: {
+    paddingTop: 20,
+    backgroundColor: '#ffffff',
   },
 });
