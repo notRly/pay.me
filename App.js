@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {Button} from './src/ui';
+import {Button, Link} from './src/ui';
 
 export default class App extends React.Component {
   render() {
@@ -8,6 +8,7 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <Text>Оппппа!</Text>
         <Button title="Кнопуля"/>
+        <Link text="Ссылка"/>
       </View>
     );
   }

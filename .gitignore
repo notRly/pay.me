@@ -3,6 +3,7 @@
 
 # Expo
 .expo
+.expo/packager-info.json
 
 
 ### Node ###

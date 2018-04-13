@@ -1,9 +1,8 @@
-// @flow
 import * as React from 'react';
-import {PROFI_RED_COLOR, WHITE_COLOR} from './constants';
+import { PROFI_RED_COLOR, WHITE_COLOR } from './constants';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default ({onPress = () =>{}, title, disabled}): React.Node => {
+export default ({onPress, title, disabled}): React.Node => {
   return (
     <TouchableOpacity
       accessibilityComponentType="button"
