@@ -1,110 +1,84 @@
-import React, { Component } from 'react';
-import {Text, View, StyleSheet } from 'react-native';
-import {CreditCardInput as CardClient} from 'react-native-credit-card-input';
-import {CreditCardInput as CardSpec} from 'react-native-credit-card-input-fork';
+import React, {Component} from 'react';
+import {Text, View, StyleSheet} from 'react-native';
+import {CreditCardInput} from 'react-native-credit-card-input';
 import {PAYMENT_TYPES} from './constants';
 import {WHITE_COLOR} from '../ui/constants';
-import Globals from '../navigation/globals';
-import {SPECIALIST, CLIENT, SENDED_PAYMENT_STATUS, REQUEST_PAYMENT_STATUS} from './constants';
-import {updateStatus} from './actions';
-
- 
 import {
-    Input,
-    Button,
-  } from 'native-base';
+  Input,
+  Button,
+  StyleProvider,
+  Container,
+  Content,
+  H2,
+} from 'native-base';
+import getTheme from '../../native-base-theme/components/';
+import theme from '../../native-base-theme/variables/platform';
 
 export default class Payment extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-    constructor(props) {
-        super(props);
-        state = {
-            cvc: "",
-            expiry: "",
-            name: "",
-            number: "",
-            type: '',
-        };
-    }
+  _onChangeCardToCard = e => {
+    console.log(e);
+  };
 
-    validateCardData = () =>{}
-
-     onChange = async (form) => {
-        const {cvc, expiry, name, number, type} = form.values;
-        this.setState({
-            cvc: cvc,
-            expiry: expiry,
-            name: name,
-            number: number,
-            type: type,
-        });
-        try {
-            await AsyncStorage.setItem('CardData', form.values);
-        } catch (error) {}
-    }
-
-    getPaymentComponent = type => {
-        let typPay;
-        switch(type) {
-            case 'CARD_TO_CARD': {
-              typPay = 
-              <View>
-                <Text>Введите данные вашей карты</Text>
-                {Globals.version === CLIENT &&
-                    <CardClient 
-                        onChange={this.onChange}
-                        requiresName={true}
-                        requiresCVC={true}/>}
-                {Globals.version === SPECIALIST && 
-                    <CardSpec 
-                        onChange={this.onChange}
-                        requiresName={true}/>}
-                <View style={styles.formCash}>
-                    <Text>Введите сумму оплаты:</Text>
-                    <Input 
-                        placeholder="сумма"/>
-                    <Button
-                      key={type}
-                      block
-                      transparent
-                      dark
-                      style={styles.button}
-                      onPress={this.goToPayment}
-                    >
-                    {Globals.version === CLIENT &&
-                      <Text style={styles.continue}>Оплатить заказ</Text>}
-                    {Globals.version === SPECIALIST &&
-                      <Text style={styles.continue}>Продолжить</Text>}
-                    </Button>
-                    </View>
-                </View>
-            }; break;
-            default: {
-                this.goToPayment()
-            };break;
-        }
-        return typPay;
-    }
-
-    goToPayment = async () => {
-        if(Globals.version === CLIENT) {
-            updateStatus(SENDED_PAYMENT_STATUS);
-            this.props.navigation.navigate('PaymentSuccess');
-            return;
-        }
-
-        updateStatus(REQUEST_PAYMENT_STATUS);
-        this.props.navigation.navigate('PaymentSuccess');
-    }
-
-    render() {
-        const {state: {params: {paymentType}}} = this.props.navigation;
-        return (
+  getPaymentComponent = type => {
+    let typPay;
+    switch (type) {
+      case 'CARD_TO_CARD':
+        {
+          typPay = (
             <View>
-                {this.getPaymentComponent(paymentType)}
+              <H2 style={styles.title2}>Введите данные вашей карты</H2>
+              <CreditCardInput
+                onChange={this._onChangeCardToCard}
+                requiresName={true}
+                requiresCVC={true}
+              />
+              <View style={styles.formCash}>
+                <Text>Введите сумму оплаты:</Text>
+                <Input placeholder="сумма" />
+                <Button
+                  key={type}
+                  block
+                  transparent
+                  dark
+                  style={styles.button}
+                  onPress={this.goToPayment}
+                >
+                  <Text style={styles.continue}>Продолжить</Text>
+                </Button>
+              </View>
             </View>
-        );
+          );
+        }
+        break;
+      default:
+        {
+          this.goToPayment();
+        }
+        break;
     }
+    return typPay;
+  };
+
+  goToPayment = () => {
+    this.props.navigation.navigate('Success');
+  };
+
+  render() {
+    const {state: {params: {paymentType}}} = this.props.navigation;
+    return (
+      <StyleProvider style={getTheme(theme)}>
+        <Container>
+          <Content style={styles.content} withPadding>
+            {this.getPaymentComponent(paymentType)}
+          </Content>{' '}
+        </Container>
+      </StyleProvider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -112,13 +86,18 @@ const styles = StyleSheet.create({
     height: 46,
     width: 250,
     backgroundColor: 'red',
-    textAlign: 'center',
+    alignSelf: 'center',
   },
-  continue:{
-      color: WHITE_COLOR,
+  continue: {
+    color: WHITE_COLOR,
+  },
+  title2: {
+    paddingBottom: 40,
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   formCash: {
-    textAlign: 'center',
-    
-  }
+    alignSelf: 'center',
+  },
 });
