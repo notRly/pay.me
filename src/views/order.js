@@ -176,7 +176,7 @@ export default class Order extends React.Component {
 
             <Footer
               style={
-                paymentStatus === SENDED_PAYMENT_STATUS
+                paymentStatus === RECEIVED_PAYMENT_STATUS
                   ? styles.footer2
                   : styles.footer
               }
@@ -194,7 +194,7 @@ export default class Order extends React.Component {
                   </ListItem>
                   <ListItem style={styles.footerItem}>
                     <Button transparent onPress={this.showProblemActions}>
-                      <Text>Это ошибка</Text>
+                      <Text style={styles.link}>Это ошибка</Text>
                     </Button>
                   </ListItem>
                 </List>
@@ -230,13 +230,7 @@ export default class Order extends React.Component {
             </View>
           </Content>
 
-          <Footer
-            style={
-              paymentStatus === SENDED_PAYMENT_STATUS
-                ? styles.footer2
-                : styles.footer
-            }
-          >
+          <Footer style={styles.footer2}>
             <List>
               <ListItem style={styles.footerItem}>
                 {paymentStatus === SENDED_PAYMENT_STATUS ? (
