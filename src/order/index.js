@@ -25,7 +25,7 @@ export default class Order extends React.Component {
 
   async componentDidMount() {
     const result = await request(
-      'http://127.0.0.1:8200/graphql',
+      'http://192.168.119.66:8200/graphql',
       ORDER_QUERY,
       {
         orderId: this.props.orderId,
