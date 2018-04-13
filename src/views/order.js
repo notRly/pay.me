@@ -40,7 +40,6 @@ import {
   RECEIVED_PAYMENT_STATUS,
 } from './constants';
 
-
 export default class Order extends React.Component {
   state = {
     loading: true,
@@ -141,7 +140,7 @@ export default class Order extends React.Component {
 
               <View style={styles.withPadding}>
                 <H2 style={styles.title2}>Сумма к оплате</H2>
-                <Text>{price}</Text>
+                <Text>{price} ₽</Text>
               </View>
 
               <View style={styles.withPadding}>
