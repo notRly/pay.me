@@ -26,7 +26,7 @@ import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
-import {ORDER_QUERY, ORDER_TITLE, CLIENT_PROBLEMS} from './constants';
+import {ORDER_QUERY, ORDER_TITLE, CLIENT_PROBLEMS, GQL_HOST} from './constants';
 
 export default class Order extends React.Component {
   state = {
@@ -38,11 +38,8 @@ export default class Order extends React.Component {
   async componentDidMount() {
     const {state: {params: {orderId}}} = this.props.navigation;
 
-    const result = await request(
-      'http://192.168.119.66:8200/graphql',
-      ORDER_QUERY,
-      {orderId},
-    );
+    const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
+    console.log('AAAAAAA', result);
     Globals.order = result.orders[0];
     this.updateTitle();
     this.setState({loading: false});
@@ -50,7 +47,7 @@ export default class Order extends React.Component {
 
   updateTitle = () => {
     this.props.navigation.setParams({});
-  }
+  };
 
   goToPaymentType = () => {
     const {navigate} = this.props.navigation;
@@ -112,9 +109,7 @@ export default class Order extends React.Component {
             <View style={styles.withPadding}>
               <H2 style={styles.title2}>Услуги</H2>
               <Text>{upperFirst(subjects)}</Text>
-              {aim && <Text note>
-                {aim}
-              </Text>}
+              {aim && <Text note>{aim}</Text>}
             </View>
 
             <View style={styles.withPadding}>
@@ -127,7 +122,12 @@ export default class Order extends React.Component {
                   <Body>
                     <Text>{executor && executor.name}</Text>
                     <Text note>
-                      {executor && upperFirst((executor.topServices || []).map(({name}) => name).join(', '))}
+                      {executor &&
+                        upperFirst(
+                          (executor.topServices || [])
+                            .map(({name}) => name)
+                            .join(', '),
+                        )}
                     </Text>
                   </Body>
                 </ListItem>

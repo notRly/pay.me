@@ -1,7 +1,13 @@
 import * as React from 'react';
 import {StackNavigator} from 'react-navigation';
 import {WHITE_COLOR, BLACK_COLOR} from '../ui';
-import {Demo as Home, Order, PaymentType, ClientProblem, Browser} from '../views';
+import {
+  Demo as Home,
+  Order,
+  PaymentType,
+  ClientProblem,
+  Browser,
+} from '../views';
 
 export default StackNavigator(
   {
@@ -19,7 +25,7 @@ export default StackNavigator(
     },
     Browser: {
       screen: Browser,
-    }
+    },
   },
   {
     initialRouteName: 'Home',
