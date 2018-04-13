@@ -202,7 +202,7 @@ export default class Order extends React.Component {
               }
             >
               {paymentStatus === RECEIVED_PAYMENT_STATUS ? (
-                <Button block onPress={() => {}}>
+                <Button block success onPress={this.goToCheck}>
                   <Text>Квитанция об оплате</Text>
                 </Button>
               ) : (
