@@ -3,9 +3,16 @@
     "sdkVersion": "26.0.0",
     "name": "pay.me",
     "slug": "pay-me",
-    "description": "profi.eu payment service",
+    "description": "profi.ru payment service",
     "version": "0.1",
     "githubUrl": "https://github.com/notRly/pay.me",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "privacy": "public",
+    "ios": {
+      "bundleIdentifier": "me.pay.profi"
+    },
+    "android": {
+      "package": "me.pay.profi"
+    }
   }
 }
