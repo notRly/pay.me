@@ -65,6 +65,15 @@ export default class PaymentType extends React.Component {
               );
             })}
           </Content>
+          <Footer style={styles.footer2}>
+            <Text onPress={this.openBrowser} style={styles.oferta}>
+              Выбирая способ оплаты, вы&nbsp;соглашаетесь с&nbsp;<Text
+                style={styles.link}
+              >
+                условиями оферты
+              </Text>
+            </Text>
+          </Footer>
         </Container>
       </StyleProvider>
     );
@@ -92,5 +101,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#999',
     marginLeft: -12,
+  },
+  link: {
+    color: '#0088c4',
+  },
+  oferta: {
+    paddingTop: 7,
   },
 });
