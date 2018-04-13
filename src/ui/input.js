@@ -11,8 +11,6 @@ export default class Input extends Component {
   render() {
     return (
       <TextInput
-        type="radio"
-        autoFocus={true}
         style={styles.input}
         onChangeText={text => this.setState({text})}
         value={this.state.text}

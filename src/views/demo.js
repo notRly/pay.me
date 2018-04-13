@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Button, Link, Title, Hint, Input} from '../ui';
-
 
 export default class Demo extends React.Component {
   static navigationOptions = {
@@ -9,8 +8,8 @@ export default class Demo extends React.Component {
   };
 
   goToOrderScreen = () => {
-    const { navigate } = this.props.navigation;
-    navigate('Order', { orderId: '12860261' })
+    const {navigate} = this.props.navigation;
+    navigate('Order', {orderId: '12860261'});
   };
 
   render() {
