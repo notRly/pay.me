@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button, Link } from '../ui';
+import {Button, Link, Title, Hint, Input} from '../ui';
 
 
 export default class Demo extends React.Component {
@@ -16,9 +16,12 @@ export default class Demo extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Оппппа!</Text>
+        <Title>Заголовок</Title>
         <Button onPress={this.goToOrderScreen}>Кнопуля</Button>
         <Link>Ссылка</Link>
+        <Hint color="red">Красный текст</Hint>
+        <Hint color="black">Черный текст текст</Hint>
+        <Input />
       </View>
     );
   }
