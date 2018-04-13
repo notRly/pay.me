@@ -5,25 +5,7 @@ import {Text, View, StyleSheet} from 'react-native';
 export default ({children, color}): React.Node => {
   return (
     <View>
-      <Text style={styles[color]}>{children}</Text>
+      <Text>{children}</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  black: {
-    fontSize: 15,
-    color: BLACK_COLOR,
-    marginTop: 10,
-    marginBottom: 10,
-    textAlign: 'left'
-  },
-
-  red: {
-    fontSize: 15,
-    color: PROFI_RED_COLOR,
-    marginTop: 10,
-    marginBottom: 10,
-    textAlign: 'left'
-  },
-});
