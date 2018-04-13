@@ -105,22 +105,26 @@ export default class Order extends React.Component {
   render() {
     if (this.state.loading)
       return (
-        <Container>
-          <Content>
-            <Spinner color="red" />
-          </Content>
-        </Container>
+        <StyleProvider style={getTheme(theme)}>
+          <Container>
+            <Content>
+              <Spinner color="red" />
+            </Content>
+          </Container>
+        </StyleProvider>
       );
 
     if (!Globals.order)
       return (
-        <Container>
-          <Content>
-            <Card>
-              <H2 style={styles.title2}>Заказ не найден</H2>
-            </Card>
-          </Content>
-        </Container>
+        <StyleProvider style={getTheme(theme)}>
+          <Container>
+            <Content>
+              <Card>
+                <H2 style={styles.title2}>Заказ не найден</H2>
+              </Card>
+            </Content>
+          </Container>
+        </StyleProvider>
       );
 
     const {name, price, subjects, aim, executor, paymentStatus} = Globals.order;
