@@ -40,3 +40,9 @@ export const CLIENT_PROBLEMS = [
   {text: "Отмена"},
 ];
 
+export const PAYMENT_TYPES = {
+  CARD_TO_CARD: 'Перевод на карту',
+  CASH: 'Наличные',
+  APPLE_PAY: 'Apple pay',
+};
+

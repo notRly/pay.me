@@ -46,7 +46,10 @@ export default class Order extends React.Component {
     this.setState({loading: false});
   }
 
-  goToPayment = () => {};
+  goToPaymentType = () => {
+    const {navigate} = this.props.navigation;
+    navigate('PaymentType');
+  };
 
   showProblemActions = () => {
     const CANCEL_INDEX = 4;
