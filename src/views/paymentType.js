@@ -15,7 +15,8 @@ import {
 } from 'native-base';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
-import {ORDER_TITLE, PAYMENT_TYPES} from './constants';
+import {ORDER_TITLE, PAYMENT_TYPES, SENDED_PAYMENT_STATUS} from './constants';
+import {updateStatus} from './actions';
 
 export default class PaymentType extends React.Component {
   static navigationOptions = {
@@ -23,8 +24,11 @@ export default class PaymentType extends React.Component {
   };
 
   goToPayment = paymentType => () => {
-    if (paymentType === 'CASH')
+    if (paymentType === 'CASH') {
+      updateStatus(SENDED_PAYMENT_STATUS);
       this.props.navigation.navigate('PaymentSuccess');
+      return;
+    }
     if (paymentType)
       this.props.navigation.navigate('Payment', {paymentType: paymentType});
   };

@@ -12,6 +12,7 @@ import {
   Content,
   Button,
   Text,
+  H2,
 } from 'native-base';
 import {updateStatus} from './actions';
 import {
