@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import {PROFI_RED_COLOR} from './constants';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default ({onPress = () =>{}, title, disabled}): React.Node => {
@@ -18,7 +19,7 @@ export default ({onPress = () =>{}, title, disabled}): React.Node => {
 const styles = StyleSheet.create({
   button: {
       elevation: 4,
-      backgroundColor: '#2196F3',
+      backgroundColor: PROFI_RED_COLOR,
       borderRadius: 2,
   },
 });
