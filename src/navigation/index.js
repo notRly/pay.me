@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StackNavigator} from 'react-navigation';
 import {WHITE_COLOR, BLACK_COLOR} from '../ui';
-import {Demo as Home, Order, PaymentType} from '../views';
+import {Demo as Home, Order, PaymentType, ClientProblem} from '../views';
 
 export default StackNavigator(
   {
@@ -13,6 +13,9 @@ export default StackNavigator(
     },
     PaymentType: {
       screen: PaymentType,
+    },
+    ClientProblem: {
+      screen: ClientProblem,
     },
   },
   {

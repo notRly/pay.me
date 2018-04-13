@@ -3,6 +3,7 @@ import {request} from 'graphql-request';
 import {StyleSheet} from 'react-native';
 import {
   StyleProvider,
+  ActionSheet,
   Card,
   Button,
   Title,
@@ -19,18 +20,14 @@ import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
-import {ORDER_QUERY} from './constants';
+import {ORDER_QUERY, ORDER_TITLE, CLIENT_PROBLEMS} from './constants';
 
 export default class Order extends React.Component {
-  state = {loading: true};
-
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: Globals.order
-        ? `Счёт к заказу №${Globals.order.id}`
-        : 'Счёт к заказу',
-    };
+  state = {
+    loading: true,
   };
+
+  static navigationOptions = ORDER_TITLE;
 
   async componentDidMount() {
     const {state: {params: {orderId}}} = this.props.navigation;
@@ -45,6 +42,22 @@ export default class Order extends React.Component {
   }
 
   goToPayment = () => {};
+
+  showProblemActions = () => {
+    const CANCEL_INDEX = 4;
+    ActionSheet.show(
+      {
+        options: CLIENT_PROBLEMS,
+        cancelButtonIndex: CANCEL_INDEX,
+      },
+      index => {
+        const problem = CLIENT_PROBLEMS[index].name;
+        if (!problem) return;
+        const {navigate} = this.props.navigation;
+        navigate('ClientProblem', {problem});
+      }
+    )
+  };
 
   render() {
     if (this.state.loading)
@@ -90,7 +103,7 @@ export default class Order extends React.Component {
             <Button block onPress={this.goToPayment}>
               <Text>Выбрать способ оплаты</Text>
             </Button>
-            <Button transparent>
+            <Button transparent onPress={this.showProblemActions}>
               <Text>Это ошибка</Text>
             </Button>
           </Footer>
