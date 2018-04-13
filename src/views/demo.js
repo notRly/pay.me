@@ -8,18 +8,18 @@ import {
   Content,
   StyleProvider,
 } from 'native-base';
+import {Image} from 'react-native';
 import Globals from '../navigation/globals';
-import {CreditCards} from '../ui';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import {SPECIALIST, CLIENT} from './constants';
 
 export default class Demo extends React.Component {
   static navigationOptions = {
-    title: 'Demo',
+    title: 'Оплата заказа PROFI.RU',
   };
 
-  goToChoseOrder = (version) => () => {
+  goToChoseOrder = version => () => {
     const {navigate} = this.props.navigation;
     Globals.version = version;
     navigate('ChooseOrder');
@@ -33,8 +33,15 @@ export default class Demo extends React.Component {
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
-        <Container>
+        <Container style={styles.container}>
           <Content style={styles.content} withPadding>
+            <View style={styles.logo}>
+              <Image
+                source={require('../../assets/logo.png')}
+                style={{height: 31, width: 200, flex: 1}}
+              />
+            </View>
+
             <Button
               style={styles.marginTop}
               block
@@ -49,10 +56,7 @@ export default class Demo extends React.Component {
             >
               <Text>Я специалист</Text>
             </Button>
-
-            <Text onPress={this.openBrowser}>Открыть браузер</Text>
           </Content>
-          <CreditCards />
         </Container>
       </StyleProvider>
     );
@@ -62,8 +66,12 @@ export default class Demo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    alignItems: 'center',
     flex: 1,
+  },
+  logo: {
+    textAlign: 'center',
+    padding: 30,
+    paddingTop: 50,
   },
   content: {
     padding: 20,

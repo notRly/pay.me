@@ -29,7 +29,13 @@ import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
-import {CLIENT, ORDER_QUERY, ORDER_TITLE, CLIENT_PROBLEMS, GQL_HOST} from './constants';
+import {
+  CLIENT,
+  ORDER_QUERY,
+  ORDER_TITLE,
+  CLIENT_PROBLEMS,
+  GQL_HOST,
+} from './constants';
 
 export default class Order extends React.Component {
   state = {
@@ -51,7 +57,7 @@ export default class Order extends React.Component {
 
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
     Globals.order = result.orders[0];
-  }
+  };
 
   updateTitle = () => {
     this.props.navigation.setParams({});
@@ -66,9 +72,9 @@ export default class Order extends React.Component {
     // TODO
   };
 
-  onChangePrice = (price) => {
+  onChangePrice = price => {
     this.setState({price});
-  }
+  };
 
   showProblemActions = () => {
     const CANCEL_INDEX = 4;
@@ -187,12 +193,12 @@ export default class Order extends React.Component {
               <Item success={!!this.state.price}>
                 <Input
                   autoFocus={true}
-                  keyboardType='numeric'
+                  keyboardType="numeric"
                   value={this.state.price}
                   disabled={this.state.loading}
                   onChangeText={this.onChangePrice}
                 />
-                {!!this.state.price && <Icon name='checkmark-circle' />}
+                {!!this.state.price && <Icon name="checkmark-circle" />}
               </Item>
             </View>
           </Content>
@@ -202,6 +208,11 @@ export default class Order extends React.Component {
               <ListItem style={styles.footerItem}>
                 <Button block onPress={this.goToRequestPayment}>
                   <Text>Продолжить</Text>
+                </Button>
+              </ListItem>
+              <ListItem style={styles.footerItem}>
+                <Button transparent onPress={this.showProblemActions}>
+                  <Text style={styles.link}>Это ошибка</Text>
                 </Button>
               </ListItem>
             </List>
@@ -242,5 +253,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     padding: 0,
     margin: 0,
+  },
+  link: {
+    color: '#0088c4',
   },
 });

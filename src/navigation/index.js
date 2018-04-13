@@ -8,6 +8,8 @@ import {
   PaymentType,
   ClientProblem,
   Browser,
+  Payment,
+  Success
 } from '../views';
 
 export default StackNavigator(
@@ -30,6 +32,12 @@ export default StackNavigator(
     Browser: {
       screen: Browser,
     },
+    Payment: {
+      screen: Payment,
+    },
+    Success: {
+      screen: Success,
+    }
   },
   {
     initialRouteName: 'Home',

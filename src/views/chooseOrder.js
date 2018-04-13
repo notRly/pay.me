@@ -30,9 +30,8 @@ import {ORDER_QUERY, GQL_HOST, CLIENT} from './constants';
 
 export default class ChooseOrder extends React.Component {
   static navigationOptions = () => ({
-    title: Globals.version === CLIENT
-      ? 'Оплатить заказ'
-      : 'Выставить счёт клиенту',
+    title:
+      Globals.version === CLIENT ? 'Оплатить заказ' : 'Выставить счёт клиенту',
   });
 
   state = {
@@ -76,7 +75,7 @@ export default class ChooseOrder extends React.Component {
               <Item error={fetchFailed}>
                 <Input
                   autoFocus={true}
-                  keyboardType='numeric'
+                  keyboardType="numeric"
                   value={orderId}
                   disabled={loading}
                   onChangeText={this.changeOrderId}
@@ -87,17 +86,15 @@ export default class ChooseOrder extends React.Component {
                 <Text style={styles.errorText}>Заказ не найден</Text>
               )}
             </View>
-          </Content>
-
-          <Footer style={styles.footer}>
             <Button
               block
+              style={styles.button}
               onPress={this.findOrder}
               disabled={loading || fetchFailed || !orderId}
             >
               {loading ? <Spinner color="red" /> : <Text>Продолжить</Text>}
             </Button>
-          </Footer>
+          </Content>
         </Container>
       </StyleProvider>
     );
@@ -121,5 +118,8 @@ const styles = StyleSheet.create({
     padding: 10,
     height: 65,
     alignItems: 'center',
+  },
+  button: {
+    marginTop: 20,
   },
 });
