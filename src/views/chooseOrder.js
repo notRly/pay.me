@@ -34,19 +34,21 @@ export default class ChooseOrder extends React.Component {
   };
 
   state = {
-    orderId: "12860037",
+    orderId: '12860037',
     loading: false,
     fetchFailed: false,
   };
 
-  changeOrderId = (orderId) => {
-    this.setState({orderId, fetchFailed: false})
+  changeOrderId = orderId => {
+    this.setState({orderId, fetchFailed: false});
   };
 
   findOrder = async () => {
     this.setState({loading: true});
     try {
-      const result = await request(GQL_HOST, ORDER_QUERY, {orderId: this.state.orderId});
+      const result = await request(GQL_HOST, ORDER_QUERY, {
+        orderId: this.state.orderId,
+      });
       if (!result.orders[0]) throw 'not found';
 
       Globals.order = result.orders[0];
@@ -54,9 +56,8 @@ export default class ChooseOrder extends React.Component {
 
       const {navigate} = this.props.navigation;
       navigate('Order', {alreadyLoaded: true});
-    }
-    catch(e){
-      this.setState({fetchFailed: true, loading: false})
+    } catch (e) {
+      this.setState({fetchFailed: true, loading: false});
     }
   };
 
@@ -72,18 +73,25 @@ export default class ChooseOrder extends React.Component {
 
               <Item error={fetchFailed}>
                 <Input
+                  autoFocus={true}
                   value={orderId}
                   disabled={loading}
                   onChangeText={this.changeOrderId}
                 />
-                {fetchFailed && <Icon name='close-circle' />}
+                {fetchFailed && <Icon name="close-circle" />}
               </Item>
-                {fetchFailed && <Text style={styles.errorText}>Заказ не найден</Text>}
+              {fetchFailed && (
+                <Text style={styles.errorText}>Заказ не найден</Text>
+              )}
             </View>
           </Content>
 
           <Footer style={styles.footer}>
-            <Button block onPress={this.findOrder} disabled={loading || fetchFailed || !orderId}>
+            <Button
+              block
+              onPress={this.findOrder}
+              disabled={loading || fetchFailed || !orderId}
+            >
               {loading ? <Spinner color="red" /> : <Text>Перейти</Text>}
             </Button>
           </Footer>
@@ -107,8 +115,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   footer: {
-    padding: 20,
-    height: 130,
+    padding: 10,
+    height: 65,
     alignItems: 'center',
   },
 });

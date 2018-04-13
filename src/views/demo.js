@@ -8,7 +8,6 @@ import {
   Content,
   StyleProvider,
 } from 'native-base';
-import {CreditCards} from '../ui';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 
@@ -45,7 +44,6 @@ export default class Demo extends React.Component {
 
             <Text onPress={this.openBrowser}>Открыть браузер</Text>
           </Content>
-          <CreditCards />
         </Container>
       </StyleProvider>
     );
@@ -53,6 +51,11 @@ export default class Demo extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
   content: {
     padding: 20,
     backgroundColor: '#ffffff',
