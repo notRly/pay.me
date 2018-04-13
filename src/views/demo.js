@@ -40,8 +40,9 @@ export default class Demo extends React.Component {
               <Text>Я клиент</Text>
             </Button>
             <Button block style={styles.marginTop}>
-              <Text>Я мастер</Text>
+              <Text>Я специалист</Text>
             </Button>
+
             <Text onPress={this.openBrowser}>Открыть браузер</Text>
           </Content>
           <CreditCards />
