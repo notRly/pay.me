@@ -57,6 +57,7 @@ export default class Order extends React.Component {
   async componentDidMount() {
     await this.fetchOrder();
     this.updateTitle();
+    this.updatePrice();
     this.setState({loading: false});
   }
 
@@ -66,9 +67,11 @@ export default class Order extends React.Component {
 
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
     Globals.order = result.orders[0];
+  };
 
+  updatePrice = () => {
     if (Globals.order.paymentStatus === REQUEST_PAYMENT_STATUS)
-      this.setState({price: Globals.order.paymentPrice});
+      this.setState({price: '' + Globals.order.paymentPrice});
   };
 
   updateTitle = () => {
