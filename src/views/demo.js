@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Link, Title, Hint, Input} from '../ui';
+import {Link, Title, Hint, Input, CreditCards} from '../ui';
 import {Button, Text, Container, StyleProvider} from 'native-base';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
@@ -20,10 +20,13 @@ export default class Demo extends React.Component {
     navigate('Browser', {url: 'http://profi.ru', back: 'Home'});
   }
 
+ 
+
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
+          <CreditCards />
           <Title>Заголовок</Title>
           <Button onPress={this.goToOrderScreen}>
             <Text>Click Me! </Text>
