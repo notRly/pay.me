@@ -11,21 +11,9 @@ export default class Input extends Component {
   render() {
     return (
       <TextInput
-        style={styles.input}
         onChangeText={text => this.setState({text})}
         value={this.state.text}
       />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  input: {
-    paddingLeft: 10,
-    height: 40,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: BORDER_COLOR,
-  },
-});

@@ -29,6 +29,14 @@ export default class PaymentType extends React.Component {
       this.props.navigation.navigate('Payment', {paymentType: paymentType});
   };
 
+  openBrowser = () => {
+    const {navigate} = this.props.navigation;
+    navigate('Browser', {
+      url: 'http://profi.ru/documents/oferta/',
+      back: 'Home',
+    });
+  };
+
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
