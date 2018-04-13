@@ -89,12 +89,12 @@ export default class Payment extends Component {
     goToPayment = async () => {
         if(Globals.version === CLIENT) {
             updateStatus(SENDED_PAYMENT_STATUS);
-            this.props.navigation.navigate('Order', {orderId: Globals.order.id});
+            this.props.navigation.navigate('PaymentSuccess');
             return;
         }
-        
+
         updateStatus(REQUEST_PAYMENT_STATUS);
-        this.props.navigation.navigate('Order', {orderId: Globals.order.id});
+        this.props.navigation.navigate('PaymentSuccess');
     }
 
     render() {

@@ -29,12 +29,15 @@ import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
+import {updateStatus} from './actions';
 import {
   CLIENT,
   ORDER_QUERY,
   ORDER_TITLE,
   CLIENT_PROBLEMS,
   GQL_HOST,
+  SENDED_PAYMENT_STATUS,
+  RECEIVED_PAYMENT_STATUS,
 } from './constants';
 
 
@@ -77,6 +80,11 @@ export default class Order extends React.Component {
   onChangePrice = price => {
     this.setState({price});
   };
+
+  applyPayment = () => {
+    updateStatus(RECEIVED_PAYMENT_STATUS);
+    this.props.navigation.navigate('PaymentSuccess');
+  }
 
   showProblemActions = () => {
     const CANCEL_INDEX = 4;
@@ -162,18 +170,25 @@ export default class Order extends React.Component {
             </Content>
 
             <Footer style={styles.footer}>
-              <List>
-                <ListItem style={styles.footerItem}>
-                  <Button block onPress={this.goToPaymentType}>
-                    <Text>Выбрать способ оплаты</Text>
+              {paymentStatus === RECEIVED_PAYMENT_STATUS
+                ? <Button block onPress={() => {}}>
+                    <Text>Квитанция об оплате</Text>
                   </Button>
-                </ListItem>
-                <ListItem style={styles.footerItem}>
-                  <Button transparent onPress={this.showProblemActions}>
-                    <Text>Это ошибка</Text>
-                  </Button>
-                </ListItem>
-              </List>
+                : (
+                  <List>
+                    <ListItem style={styles.footerItem}>
+                      <Button block onPress={this.goToPaymentType}>
+                        <Text>Выбрать способ оплаты</Text>
+                      </Button>
+                    </ListItem>
+                    <ListItem style={styles.footerItem}>
+                      <Button transparent onPress={this.showProblemActions}>
+                        <Text>Это ошибка</Text>
+                      </Button>
+                    </ListItem>
+                  </List>
+                )
+              }
             </Footer>
           </Container>
         </StyleProvider>
@@ -208,14 +223,14 @@ export default class Order extends React.Component {
           <Footer style={styles.footer}>
             <List>
               <ListItem style={styles.footerItem}>
-                <Button block onPress={this.goToRequestPayment}>
-                  <Text>Продолжить</Text>
-                </Button>
-              </ListItem>
-              <ListItem style={styles.footerItem}>
-                <Button transparent onPress={this.showProblemActions}>
-                  <Text style={styles.link}>Это ошибка</Text>
-                </Button>
+                {paymentStatus === SENDED_PAYMENT_STATUS
+                  ? <Button transparent onPress={this.applyPayment}>
+                      <Text>Подтвердить получение платежа</Text>
+                    </Button>
+                  : <Button block onPress={this.goToRequestPayment}>
+                      <Text transparent>Продолжить</Text>
+                    </Button>
+                }
               </ListItem>
             </List>
           </Footer>
