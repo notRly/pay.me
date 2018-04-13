@@ -2,6 +2,7 @@ import * as React from 'react';
 import {request} from 'graphql-request';
 import {StyleSheet} from 'react-native';
 import {
+  StyleProvider,
   Card,
   Button,
   Title,
@@ -10,6 +11,8 @@ import {
   Footer,
   Content,
 } from 'native-base';
+import getTheme from '../../native-base-theme/components/';
+import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
 import {ORDER_QUERY} from './constants';
 
@@ -19,7 +22,7 @@ export default class Order extends React.Component {
 
     return {
       title: params ? `Счёт к заказу №${params.orderId}` : 'Счёт к заказу',
-    }
+    };
   };
 
   state = {};
@@ -30,14 +33,14 @@ export default class Order extends React.Component {
     const result = await request(
       'http://192.168.119.66:8200/graphql',
       ORDER_QUERY,
-      {orderId}
+      {orderId},
     );
     this.setState({order: result.orders[0]});
   }
 
   goToPayment = () => {};
 
-  render () {
+  render() {
     const {order} = this.state;
 
     if (!order) return (
@@ -51,33 +54,35 @@ export default class Order extends React.Component {
     );
 
     return (
-      <Container>
-        <Content>
-          <Card>
-            <Title>Имя клиента</Title>
-            <Text>{order.name}</Text>
+      <StyleProvider style={getTheme(theme)}>
+        <Container>
+          <Content>
+            <Card>
+              <Title>Имя клиента</Title>
+              <Text>{order.name}</Text>
 
-            <Title>Сумма к оплате</Title>
-            <Text>{order.stoim}</Text>
+              <Title>Сумма к оплате</Title>
+              <Text>{order.stoim}</Text>
 
-            <Title>Услуги</Title>
-            <Text>{order.subjects}</Text>
+              <Title>Услуги</Title>
+              <Text>{order.subjects}</Text>
 
-            <Title>Специалист</Title>
-            <Avatar path={order.executor && order.executor.avatar}/>
-            <Text>{order.executor && order.executor.name}</Text>
-          </Card>
-        </Content>
+              <Title>Специалист</Title>
+              <Avatar path={order.executor && order.executor.avatar}/>
+              <Text>{order.executor && order.executor.name}</Text>
+            </Card>
+          </Content>
 
-        <Footer>
-          <Button onPress={this.goToPayment}>
-              <Text>Выбрать способ оплаты</Text>
-          </Button>
-          <Button transparent>
-            <Text>Это ошибка</Text>
-          </Button>
-        </Footer>
-      </Container>
+          <Footer>
+            <Button onPress={this.goToPayment}>
+                <Text>Выбрать способ оплаты</Text>
+            </Button>
+            <Button transparent>
+              <Text>Это ошибка</Text>
+            </Button>
+          </Footer>
+        </Container>
+      </StyleProvider>
     );
   }
 }
