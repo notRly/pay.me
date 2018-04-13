@@ -1,5 +1,11 @@
 {
   "expo": {
-    "sdkVersion": "26.0.0"
+    "sdkVersion": "26.0.0",
+    "name": "pay.me",
+    "slug": "pay-me",
+    "description": "profi.eu payment service",
+    "version": "0.1",
+    "githubUrl": "https://github.com/notRly/pay.me",
+    "orientation": "portrait"
   }
 }
