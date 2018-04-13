@@ -8,10 +8,10 @@ export default class Browser extends Component {
   };
 
   async componentDidMount () {
-  	const {navigate, state: {params: {url, back}}} = this.props.navigation;
+	const {goBack, state: {params: {url, back}}} = this.props.navigation;
     await WebBrowser.openBrowserAsync(url);
 
-    navigate(back);
+    goBack(back);
   }
 
   render() {

@@ -29,13 +29,18 @@ import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
+import qs from 'qs';
 import {updateStatus} from './actions';
+import moment from 'moment';
+import 'moment/locale/ru';
+moment.locale('ru');
 import {
   CLIENT,
   ORDER_QUERY,
   ORDER_TITLE,
   CLIENT_PROBLEMS,
   GQL_HOST,
+  STEND_HOST,
   SENDED_PAYMENT_STATUS,
   RECEIVED_PAYMENT_STATUS,
 } from './constants';
@@ -76,6 +81,21 @@ export default class Order extends React.Component {
     const {navigate} = this.props.navigation;
     navigate('Payment', {paymentType: 'CARD_TO_CARD'});
   };
+
+  goToCheck = () => {
+    const {navigate} = this.props.navigation;
+    const {order} = Globals;
+    navigate('Browser', {url: STEND_HOST + '/getcheck?' + qs.stringify({
+      orderId: order.id,
+      date: moment(order.receivd).lang('ru').format('LLL'),
+      specialist: (order.executor || {}).name,
+      inn: '7804034404',
+      phone: order.phone,
+      aim: order.aim || order.subjects,
+      price: order.price,
+      paymentType: ''
+    })});
+  }
 
   onChangePrice = price => {
     this.setState({price});

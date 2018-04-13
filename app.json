@@ -11,6 +11,7 @@
     "ios": {
       "bundleIdentifier": "ru.profi.hackaton.pay"
     },
+    "scheme": "profipay",
     "android": {
       "package": "ru.profi.hackaton.pay"
     },
