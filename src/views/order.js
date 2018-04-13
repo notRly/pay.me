@@ -1,7 +1,16 @@
 import * as React from 'react';
 import {request} from 'graphql-request';
 import {StyleSheet} from 'react-native';
-import {Button, Title, Text, Container, Footer} from 'native-base';
+import {
+  Card,
+  Button,
+  Title,
+  Text,
+  Container,
+  Footer,
+  Content,
+} from 'native-base';
+import Avatar from './components/avatar';
 import {ORDER_QUERY} from './constants';
 
 export default class Order extends React.Component {
@@ -31,14 +40,41 @@ export default class Order extends React.Component {
   render () {
     const {order} = this.state;
 
+    if (!order) return (
+      <Container>
+        <Content>
+          <Card>
+            <Title>Заказ не найден</Title>
+          </Card>
+        </Content>
+      </Container>
+    );
+
     return (
       <Container>
-        <Title>Имя клиента</Title>
-        <Text>{order && order.name}</Text>
+        <Content>
+          <Card>
+            <Title>Имя клиента</Title>
+            <Text>{order.name}</Text>
+
+            <Title>Сумма к оплате</Title>
+            <Text>{order.stoim}</Text>
+
+            <Title>Услуги</Title>
+            <Text>{order.subjects}</Text>
+
+            <Title>Специалист</Title>
+            <Avatar path={order.executor && order.executor.avatar}/>
+            <Text>{order.executor && order.executor.name}</Text>
+          </Card>
+        </Content>
 
         <Footer>
           <Button onPress={this.goToPayment}>
               <Text>Выбрать способ оплаты</Text>
+          </Button>
+          <Button transparent>
+            <Text>Это ошибка</Text>
           </Button>
         </Footer>
       </Container>

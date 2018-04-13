@@ -12,6 +12,12 @@ export const ORDER_QUERY = `
       name
       phone
       email
+      stoim
+      executor {
+        name
+        avatar(width: 90, height: 120)
+        gender
+      }
     }
   }
 `;
