@@ -9,10 +9,16 @@
     "orientation": "portrait",
     "privacy": "public",
     "ios": {
-      "bundleIdentifier": "me.pay.profi"
+      "bundleIdentifier": "ru.profi.hackaton.pay"
     },
     "android": {
-      "package": "me.pay.profi"
-    }
+      "package": "ru.profi.hackaton.pay"
+    },
+    "splash": {
+  		"image": "./assets/splash.png",
+  		"backgroundColor": "#C00027",
+  		"resizeMode": "cover"
+	},
+    "icon": "./assets/icon.png"
   }
 }

@@ -15,6 +15,11 @@ export default class Demo extends React.Component {
     navigate('Order', {orderId: '12860037'});
   };
 
+  openBrowser = () => {
+    const {navigate} = this.props.navigation;
+    navigate('Browser', {url: 'http://profi.ru', back: 'Home'});
+  }
+
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
@@ -24,6 +29,7 @@ export default class Demo extends React.Component {
             <Text>Click Me! </Text>
           </Button>
           <Link>Ссылка</Link>
+          <Link onPress={this.openBrowser}>Открыть браузер</Link>
           <Hint color="red">Красный текст</Hint>
           <Hint color="black">Черный текст текст</Hint>
           <Input />
