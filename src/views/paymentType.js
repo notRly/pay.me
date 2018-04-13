@@ -87,7 +87,7 @@ export default class Order extends React.Component {
           </Content>
 
           <Footer>
-            <Button block onPress={this.goToPayment}>
+            <Button onPress={this.goToPayment}>
               <Text>Выбрать способ оплаты</Text>
             </Button>
             <Button transparent>
