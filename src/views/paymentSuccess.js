@@ -1,4 +1,5 @@
 import React from 'react';
+import {request} from 'graphql-request';
 import {StyleSheet} from 'react-native';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
@@ -15,6 +16,7 @@ import {
 import {updateStatus} from './actions';
 import {
   CLIENT,
+  SPECIALIST,
   ORDER_QUERY,
   GQL_HOST,
   REQUEST_PAYMENT_STATUS,
@@ -26,8 +28,8 @@ import {
 export default class PaymentSuccess extends React.Component {
   state = {loading: true};
 
-  static navigationOptions = () => Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
-   ? ORDER_TITLE()
+  static navigationOptions = (params) => Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
+   ? ORDER_TITLE(params)
    : 'Заказ №' + Globals.order && Globals.order.id;
 
   async componentDidMount() {
@@ -35,8 +37,9 @@ export default class PaymentSuccess extends React.Component {
   }
 
   refetchOrder = async () => {
+    if (!Globals.order) return;
     this.setState({loading: true});
-    const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
+    const result = await request(GQL_HOST, ORDER_QUERY, {orderId: Globals.order.id});
     Globals.order = result.orders[0];
     this.setState({loading: false});
   }
