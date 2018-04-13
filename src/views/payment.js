@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {CreditCardInput as ClientCard} from 'react-native-credit-card-input';
 import {CreditCardInput as SpecCard} from 'react-native-credit-card-input-fork';
-import {PAYMENT_TYPES, SPECIALIST, CLIENT} from './constants';
+import {
+    PAYMENT_TYPES, 
+    SPECIALIST,
+    CLIENT,
+    REQUEST_PAYMENT_STATUS,
+    SENDED_PAYMENT_STATUS
+} from './constants';
 import {WHITE_COLOR} from '../ui/constants';
 import {
   Input,
@@ -20,8 +26,6 @@ import {
     saveCardDataToLocalStorage,
     updateStatus,
 } from './actions';
-
-
 
 export default class Payment extends Component {
   constructor(props) {
@@ -101,7 +105,7 @@ export default class Payment extends Component {
     return typPay;
   };
 
-  goToPayment = async () => {
+  goToPayment = () => {
     if(Globals.version === CLIENT) {
         updateStatus(SENDED_PAYMENT_STATUS);
         this.props.navigation.navigate('PaymentSuccess');
