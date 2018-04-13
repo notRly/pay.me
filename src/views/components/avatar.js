@@ -2,7 +2,9 @@ import * as React from 'react';
 import {Thumbnail} from 'native-base';
 
 export default ({path, gender}): React.Node => {
-  return <Thumbnail square size={90} source={{uri: avatarUrl(path, gender)}} />;
+  return (
+    <Thumbnail square size={120} source={{uri: avatarUrl(path, gender)}} />
+  );
 };
 
 function avatarUrl(url?: ?string, gender?: ?string): string {

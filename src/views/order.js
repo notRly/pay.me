@@ -83,7 +83,7 @@ export default class Order extends React.Component {
   applyPayment = () => {
     updateStatus(RECEIVED_PAYMENT_STATUS);
     this.props.navigation.navigate('PaymentSuccess');
-  }
+  };
 
   showProblemActions = () => {
     const CANCEL_INDEX = 4;
@@ -140,7 +140,7 @@ export default class Order extends React.Component {
 
               <View style={styles.withPadding}>
                 <H2 style={styles.title2}>Сумма к оплате</H2>
-                <Text>{price} ₽</Text>
+                <Text style={styles.price}>{price} ₽</Text>
               </View>
 
               <View style={styles.withPadding}>
@@ -157,7 +157,9 @@ export default class Order extends React.Component {
                       <Avatar path={executor && executor.avatar} />
                     </Left>
                     <Body>
-                      <Text>{executor && executor.name}</Text>
+                      <Text style={styles.fz20}>
+                        {executor && executor.name}
+                      </Text>
                       <Text note>
                         {executor &&
                           upperFirst(
@@ -172,26 +174,31 @@ export default class Order extends React.Component {
               </View>
             </Content>
 
-            <Footer style={styles.footer}>
-              {paymentStatus === RECEIVED_PAYMENT_STATUS
-                ? <Button block onPress={() => {}}>
-                    <Text>Квитанция об оплате</Text>
-                  </Button>
-                : (
-                  <List>
-                    <ListItem style={styles.footerItem}>
-                      <Button block onPress={this.goToPaymentType}>
-                        <Text>Выбрать способ оплаты</Text>
-                      </Button>
-                    </ListItem>
-                    <ListItem style={styles.footerItem}>
-                      <Button transparent onPress={this.showProblemActions}>
-                        <Text>Это ошибка</Text>
-                      </Button>
-                    </ListItem>
-                  </List>
-                )
+            <Footer
+              style={
+                paymentStatus === SENDED_PAYMENT_STATUS
+                  ? styles.footer2
+                  : styles.footer
               }
+            >
+              {paymentStatus === RECEIVED_PAYMENT_STATUS ? (
+                <Button block onPress={() => {}}>
+                  <Text>Квитанция об оплате</Text>
+                </Button>
+              ) : (
+                <List>
+                  <ListItem style={styles.footerItem}>
+                    <Button block onPress={this.goToPaymentType}>
+                      <Text>Выбрать способ оплаты</Text>
+                    </Button>
+                  </ListItem>
+                  <ListItem style={styles.footerItem}>
+                    <Button transparent onPress={this.showProblemActions}>
+                      <Text>Это ошибка</Text>
+                    </Button>
+                  </ListItem>
+                </List>
+              )}
             </Footer>
           </Container>
         </StyleProvider>
@@ -223,17 +230,24 @@ export default class Order extends React.Component {
             </View>
           </Content>
 
-          <Footer style={styles.footer}>
+          <Footer
+            style={
+              paymentStatus === SENDED_PAYMENT_STATUS
+                ? styles.footer2
+                : styles.footer
+            }
+          >
             <List>
               <ListItem style={styles.footerItem}>
-                {paymentStatus === SENDED_PAYMENT_STATUS
-                  ? <Button transparent onPress={this.applyPayment}>
-                      <Text>Подтвердить получение платежа</Text>
-                    </Button>
-                  : <Button block onPress={this.goToRequestPayment}>
-                      <Text transparent>Продолжить</Text>
-                    </Button>
-                }
+                {paymentStatus === SENDED_PAYMENT_STATUS ? (
+                  <Button transparent onPress={this.applyPayment}>
+                    <Text>Подтвердить получение платежа</Text>
+                  </Button>
+                ) : (
+                  <Button block onPress={this.goToRequestPayment}>
+                    <Text transparent>Продолжить</Text>
+                  </Button>
+                )}
               </ListItem>
             </List>
           </Footer>
@@ -257,6 +271,7 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingTop: 10,
+    paddingBottom: 30,
   },
   content: {
     padding: 20,
@@ -265,6 +280,11 @@ const styles = StyleSheet.create({
   footer: {
     padding: 20,
     height: 130,
+    alignItems: 'center',
+  },
+  footer2: {
+    padding: 20,
+    height: 80,
     alignItems: 'center',
   },
   footerItem: {
@@ -276,5 +296,11 @@ const styles = StyleSheet.create({
   },
   link: {
     color: '#0088c4',
+  },
+  price: {
+    fontSize: 24,
+  },
+  fz20: {
+    fontSize: 20,
   },
 });
