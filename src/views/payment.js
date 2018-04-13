@@ -6,7 +6,11 @@ import {PAYMENT_TYPES} from './constants';
 import {WHITE_COLOR} from '../ui/constants';
 import Globals from '../navigation/globals';
 import {SPECIALIST, CLIENT, SENDED_PAYMENT_STATUS, REQUEST_PAYMENT_STATUS} from './constants';
-import {updateStatus} from './actions';
+import {
+    updateStatus,
+    saveCardDataToLocalStorage,
+    isVaidCreditCard,
+} from './actions';
 
  
 import {
@@ -18,32 +22,36 @@ export default class Payment extends Component {
 
     constructor(props) {
         super(props);
-        state = {
-            cvc: "",
-            expiry: "",
-            name: "",
-            number: "",
-            type: '',
+        this.state = {
+            card: {
+                cvc: "",
+                expiry: "",
+                name: "",
+                number: "",
+                type: '',
+            }
         };
     }
-
-    validateCardData = () =>{}
 
      onChange = async (form) => {
         const {cvc, expiry, name, number, type} = form.values;
         this.setState({
-            cvc: cvc,
-            expiry: expiry,
-            name: name,
-            number: number,
-            type: type,
+            card: {
+                cvc: cvc,
+                expiry: expiry,
+                name: name,
+                number: number,
+                type: type,
+            }
         });
-        try {
-            await AsyncStorage.setItem('CardData', form.values);
-        } catch (error) {}
+        if(isVaidCreditCard(this.state.card)) {
+            saveCardDataToLocalStorage(this.state.card);
+        }
     }
 
     getPaymentComponent = type => {
+        const {card} = this.state;
+        const isValidCard = isVaidCreditCard(card, Globals.version);
         let typPay;
         switch(type) {
             case 'CARD_TO_CARD': {
@@ -68,7 +76,8 @@ export default class Payment extends Component {
                       block
                       transparent
                       dark
-                      style={styles.button}
+                      disabled={!isValidCard}
+                      style={isValidCard ? styles.buttonActive: styles.buttonDisabled}
                       onPress={this.goToPayment}
                     >
                     {Globals.version === CLIENT &&
@@ -89,12 +98,12 @@ export default class Payment extends Component {
     goToPayment = async () => {
         if(Globals.version === CLIENT) {
             updateStatus(SENDED_PAYMENT_STATUS);
-            this.props.navigation.navigate('PaymentSuccess');
+            this.props.navigation.navigate('Order', {orderId: Globals.order.id});
             return;
         }
-
+        
         updateStatus(REQUEST_PAYMENT_STATUS);
-        this.props.navigation.navigate('PaymentSuccess');
+        this.props.navigation.navigate('Order', {orderId: Globals.order.id});
     }
 
     render() {
@@ -108,10 +117,16 @@ export default class Payment extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
+    buttonActive: {
     height: 46,
     width: 250,
     backgroundColor: 'red',
+    textAlign: 'center',
+  },
+  buttonDisabled: {
+    height: 46,
+    width: 250,
+    backgroundColor: 'gray',
     textAlign: 'center',
   },
   continue:{

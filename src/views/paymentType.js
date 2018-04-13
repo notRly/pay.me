@@ -18,7 +18,9 @@ import theme from '../../native-base-theme/variables/platform';
 import {ORDER_TITLE, PAYMENT_TYPES} from './constants';
 
 export default class PaymentType extends React.Component {
-  static navigationOptions = ORDER_TITLE;
+  static navigationOptions = {
+    title: 'Оплата заказа картой',
+  };
 
   goToPayment = paymentType => () => {
     if (paymentType)
