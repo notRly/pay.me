@@ -38,7 +38,7 @@ export default class Demo extends React.Component {
             <View style={styles.logo}>
               <Image
                 source={require('../../assets/logo.png')}
-                style={{height: 31, width: 200, flex: 1}}
+                style={{height: 31, width: 200, flex: 1, alignSelf: 'center'}}
               />
             </View>
 
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    textAlign: 'center',
     padding: 30,
     paddingTop: 50,
   },
