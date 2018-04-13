@@ -31,7 +31,7 @@ export default class PaymentType extends React.Component {
         <Container>
           <Content style={styles.content} withPadding>
             <H2 style={styles.title2}>Выберите способ оплаты</H2>
-            <Icon name="logo-apple" />
+            <Icon name="logo-apple" style={{color: '#999'}} />
             {Object.keys(PAYMENT_TYPES).map(paymentType => {
               // TODO: впендошить иконку
               if (paymentType === PAYMENT_TYPES.APPLE_PAY)
