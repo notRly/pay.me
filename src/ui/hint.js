@@ -14,10 +14,16 @@ const styles = StyleSheet.create({
   black: {
     fontSize: 15,
     color: BLACK_COLOR,
+    marginTop: 10,
+    marginBottom: 10,
+    textAlign: 'left'
   },
 
   red: {
     fontSize: 15,
     color: PROFI_RED_COLOR,
+    marginTop: 10,
+    marginBottom: 10,
+    textAlign: 'left'
   },
 });
