@@ -19,7 +19,7 @@ export default class Demo extends React.Component {
 
   goToOrderScreen = () => {
     const {navigate} = this.props.navigation;
-    navigate('Order', {orderId: '12860037'});
+    navigate('ChooseOrder');
   };
 
   openBrowser = () => {

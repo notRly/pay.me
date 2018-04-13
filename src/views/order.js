@@ -36,12 +36,17 @@ export default class Order extends React.Component {
   static navigationOptions = ORDER_TITLE;
 
   async componentDidMount() {
-    const {state: {params: {orderId}}} = this.props.navigation;
+    await this.fetchOrder();
+    this.updateTitle();
+    this.setState({loading: false});
+  }
+
+  fetchOrder = async () => {
+    const {state: {params: {orderId, alreadyLoaded}}} = this.props.navigation;
+    if (Globals.order && alreadyLoaded) return;
 
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
     Globals.order = result.orders[0];
-    this.updateTitle();
-    this.setState({loading: false});
   }
 
   updateTitle = () => {

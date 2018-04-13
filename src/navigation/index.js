@@ -3,6 +3,7 @@ import {StackNavigator} from 'react-navigation';
 import {WHITE_COLOR, BLACK_COLOR} from '../ui';
 import {
   Demo as Home,
+  ChooseOrder,
   Order,
   PaymentType,
   ClientProblem,
@@ -13,6 +14,9 @@ export default StackNavigator(
   {
     Home: {
       screen: Home,
+    },
+    ChooseOrder: {
+      screen: ChooseOrder,
     },
     Order: {
       screen: Order,
