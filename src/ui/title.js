@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import {BLACK_COLOR} from './constants';
 import {View, Text, StyleSheet} from 'react-native';
@@ -16,5 +15,8 @@ const styles = StyleSheet.create({
     color: BLACK_COLOR,
     fontWeight: 'bold',
     fontSize: 20,
+    marginTop: 20,
+    marginBottom: 20,
+    textAlign: 'left'
   },
 });

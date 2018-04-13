@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PROFI_RED_COLOR, WHITE_COLOR } from './constants';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import {Button, Text} from 'native-base';
 
 export default ({onPress, disabled, children}): React.Node => {
   return (
@@ -8,9 +9,9 @@ export default ({onPress, disabled, children}): React.Node => {
       accessibilityComponentType="button"
       disabled={disabled}
       onPress={onPress}>
-      <View style={styles.button}>
+      <Button style={styles.button}>
         <Text style={styles.text} disabled={disabled}>{children}</Text>
-      </View>
+      </Button>
     </TouchableOpacity>
   );
 };
