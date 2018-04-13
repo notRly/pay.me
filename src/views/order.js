@@ -10,22 +10,22 @@ import {
   Container,
   Footer,
   Content,
+  Spinner,
 } from 'native-base';
+import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
 import {ORDER_QUERY} from './constants';
 
 export default class Order extends React.Component {
-  static navigationOptions = ({navigation}) => {
-    const {params} = navigation.state;
+  state = {loading: true};
 
+  static navigationOptions = ({navigation}) => {
     return {
-      title: params ? `Счёт к заказу №${params.orderId}` : 'Счёт к заказу',
+      title: Globals.order ? `Счёт к заказу №${Globals.order.id}` : 'Счёт к заказу',
     };
   };
-
-  state = {};
 
   async componentDidMount() {
     const {state: {params: {orderId}}} = this.props.navigation;
@@ -35,15 +35,22 @@ export default class Order extends React.Component {
       ORDER_QUERY,
       {orderId},
     );
-    this.setState({order: result.orders[0]});
+    Globals.order = result.orders[0];
+    this.setState({loading: false});
   }
 
   goToPayment = () => {};
 
   render() {
-    const {order} = this.state;
+    if (this.state.loading) return (
+      <Container>
+        <Content>
+          <Spinner color='red' />
+        </Content>
+      </Container>
+    );
 
-    if (!order) return (
+    if (!Globals.order) return (
       <Container>
         <Content>
           <Card>
@@ -53,23 +60,24 @@ export default class Order extends React.Component {
       </Container>
     );
 
+    const {name, price, subjects, executor} = Globals.order;
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
           <Content>
             <Card>
               <Title>Имя клиента</Title>
-              <Text>{order.name}</Text>
+              <Text>{name}</Text>
 
               <Title>Сумма к оплате</Title>
-              <Text>{order.stoim}</Text>
+              <Text>{price}</Text>
 
               <Title>Услуги</Title>
-              <Text>{order.subjects}</Text>
+              <Text>{subjects}</Text>
 
               <Title>Специалист</Title>
-              <Avatar path={order.executor && order.executor.avatar}/>
-              <Text>{order.executor && order.executor.name}</Text>
+              <Avatar path={executor && executor.avatar}/>
+              <Text>{executor && executor.name}</Text>
             </Card>
           </Content>
 

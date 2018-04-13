@@ -1,7 +1,7 @@
 export const ORDER_QUERY = `
   query getOrderDetails($orderId: ID!) {
     orders(id: [$orderId]) {
-      _id
+      id: _id
       status
       receivd
       subjects
@@ -12,7 +12,7 @@ export const ORDER_QUERY = `
       name
       phone
       email
-      stoim
+      price: stoim
       executor {
         name
         avatar(width: 90, height: 120)
