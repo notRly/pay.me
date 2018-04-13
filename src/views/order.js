@@ -138,7 +138,7 @@ export default class Order extends React.Component {
           <Footer style={styles.footer}>
             <List>
               <ListItem style={styles.footerItem}>
-                <Button block onPress={this.goToPayment}>
+                <Button block onPress={this.goToPaymentType}>
                   <Text>Выбрать способ оплаты</Text>
                 </Button>
               </ListItem>
