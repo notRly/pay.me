@@ -19,6 +19,9 @@ export const ORDER_QUERY = `
         name
         avatar(width: 90, height: 120)
         gender
+        topServices {
+          name
+        }
       }
     }
   }

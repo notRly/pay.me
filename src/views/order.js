@@ -21,6 +21,7 @@ import {
   Left,
   Body,
 } from 'native-base';
+import {upperFirst} from '../utils';
 import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
@@ -43,7 +44,12 @@ export default class Order extends React.Component {
       {orderId},
     );
     Globals.order = result.orders[0];
+    this.updateTitle();
     this.setState({loading: false});
+  }
+
+  updateTitle = () => {
+    this.props.navigation.setParams({});
   }
 
   goToPaymentType = () => {
@@ -88,7 +94,7 @@ export default class Order extends React.Component {
         </Container>
       );
 
-    const {name, price, subjects, executor} = Globals.order;
+    const {name, price, subjects, aim, executor} = Globals.order;
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
@@ -105,7 +111,10 @@ export default class Order extends React.Component {
 
             <View style={styles.withPadding}>
               <H2 style={styles.title2}>Услуги</H2>
-              <Text>{subjects}</Text>
+              <Text>{upperFirst(subjects)}</Text>
+              {aim && <Text note>
+                {aim}
+              </Text>}
             </View>
 
             <View style={styles.withPadding}>
@@ -118,7 +127,7 @@ export default class Order extends React.Component {
                   <Body>
                     <Text>{executor && executor.name}</Text>
                     <Text note>
-                      Тут можно написать преподаватель чонить там
+                      {executor && upperFirst((executor.topServices || []).map(({name}) => name).join(', '))}
                     </Text>
                   </Body>
                 </ListItem>
