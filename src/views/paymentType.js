@@ -23,6 +23,8 @@ export default class PaymentType extends React.Component {
   };
 
   goToPayment = paymentType => () => {
+    if (paymentType === 'CASH')
+      this.props.navigation.navigate('PaymentSuccess');
     if (paymentType)
       this.props.navigation.navigate('Payment', {paymentType: paymentType});
   };

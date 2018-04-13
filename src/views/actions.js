@@ -3,9 +3,9 @@ import Globals from '../navigation/globals';
 import {UPDATE_ORDER_QUERY, GQL_HOST, SPECIALIST, CLIENT} from './constants';
 
 
-export const updateStatus = async (status) => {
+export const updateStatus = async (status, price) => {
   if (!Globals.order) return;
-  const result = await request(GQL_HOST, UPDATE_ORDER_QUERY, {input: {orderId: Globals.order.id, status}});
+  const result = await request(GQL_HOST, UPDATE_ORDER_QUERY, {input: {orderId: Globals.order.id, status, price}});
 }
 
 

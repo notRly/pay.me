@@ -26,6 +26,7 @@ export const ORDER_QUERY = `
       email
       price: stoim
       paymentStatus
+      paymentPrice
       executor {
         name
         avatar(width: 90, height: 120)

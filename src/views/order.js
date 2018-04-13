@@ -37,6 +37,7 @@ import {
   CLIENT_PROBLEMS,
   GQL_HOST,
   SENDED_PAYMENT_STATUS,
+  REQUEST_PAYMENT_STATUS,
   RECEIVED_PAYMENT_STATUS,
 } from './constants';
 
@@ -60,6 +61,9 @@ export default class Order extends React.Component {
 
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
     Globals.order = result.orders[0];
+
+    if (Globals.order.paymentStatus === REQUEST_PAYMENT_STATUS)
+      this.setState({price: Globals.order.paymentPrice})
   };
 
   updateTitle = () => {
@@ -81,7 +85,7 @@ export default class Order extends React.Component {
   };
 
   applyPayment = () => {
-    updateStatus(RECEIVED_PAYMENT_STATUS);
+    updateStatus(RECEIVED_PAYMENT_STATUS, this.state.price);
     this.props.navigation.navigate('PaymentSuccess');
   };
 
@@ -126,7 +130,7 @@ export default class Order extends React.Component {
         </StyleProvider>
       );
 
-    const {name, price, subjects, aim, executor, paymentStatus} = Globals.order;
+    const {name, paymentPrice, subjects, aim, executor, paymentStatus} = Globals.order;
 
     if (Globals.version === CLIENT)
       return (
@@ -140,7 +144,7 @@ export default class Order extends React.Component {
 
               <View style={styles.withPadding}>
                 <H2 style={styles.title2}>Сумма к оплате</H2>
-                <Text style={styles.price}>{price} ₽</Text>
+                <Text style={styles.price}>{paymentPrice} ₽</Text>
               </View>
 
               <View style={styles.withPadding}>
@@ -222,7 +226,7 @@ export default class Order extends React.Component {
                   autoFocus={true}
                   keyboardType="numeric"
                   value={this.state.price}
-                  disabled={this.state.loading}
+                  disabled={this.state.loading || paymentStatus === REQUEST_PAYMENT_STATUS}
                   onChangeText={this.onChangePrice}
                 />
                 {!!this.state.price && <Icon name="checkmark-circle" />}
