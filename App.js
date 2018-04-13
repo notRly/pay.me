@@ -7,8 +7,8 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Оппппа!</Text>
-        <Button title="Кнопуля"/>
-        <Link text="Ссылка"/>
+        <Button>Кнопуля</Button>
+        <Link>Ссылка</Link>
       </View>
     );
   }

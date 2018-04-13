@@ -2,14 +2,14 @@ import * as React from 'react';
 import { PROFI_RED_COLOR, WHITE_COLOR } from './constants';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default ({onPress, title, disabled}): React.Node => {
+export default ({onPress, disabled, children}): React.Node => {
   return (
     <TouchableOpacity
       accessibilityComponentType="button"
       disabled={disabled}
       onPress={onPress}>
       <View style={styles.button}>
-        <Text style={styles.text} disabled={disabled}>{title}</Text>
+        <Text style={styles.text} disabled={disabled}>{children}</Text>
       </View>
     </TouchableOpacity>
   );
