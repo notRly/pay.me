@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {request} from 'graphql-request';
 import {StyleSheet} from 'react-native';
 import {
   StyleProvider,
@@ -9,90 +8,51 @@ import {
   Container,
   Footer,
   Content,
-  Spinner,
-  H1,
+  CheckBox,
   H2,
-  H3,
 } from 'native-base';
-import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
-import Avatar from './components/avatar';
-import {ORDER_QUERY} from './constants';
+import {ORDER_TITLE, PAYMENT_TYPES} from './constants';
 
-export default class Order extends React.Component {
-  state = {loading: true};
+export default class PaymentType extends React.Component {
+  static navigationOptions = ORDER_TITLE;
 
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: Globals.order
-        ? `Счёт к заказу №${Globals.order.id}`
-        : 'Счёт к заказу',
-    };
+  goToPayment = paymentType => () => {
+    if (paymentType)
+      this.props.navigation.navigate('Payment', {paymentType: paymentType});
   };
 
-  async componentDidMount() {
-    const {state: {params: {orderId}}} = this.props.navigation;
-
-    const result = await request(
-      'http://192.168.119.66:8200/graphql',
-      ORDER_QUERY,
-      {orderId},
-    );
-    Globals.order = result.orders[0];
-    this.setState({loading: false});
-  }
-
-  goToPayment = () => {};
-
   render() {
-    if (this.state.loading)
-      return (
-        <Container>
-          <Content>
-            <Spinner color="red" />
-          </Content>
-        </Container>
-      );
-
-    if (!Globals.order)
-      return (
-        <Container>
-          <Content>
-            <Card>
-              <H2 style={styles.title2}>Заказ не найден</H2>
-            </Card>
-          </Content>
-        </Container>
-      );
-
-    const {name, price, subjects, executor} = Globals.order;
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
           <Content style={styles.content} withPadding>
-            <H2 style={styles.title2}>Имя клиента</H2>
-            <Text>{name}</Text>
+            <H2 style={styles.title2}>Выберите способ оплаты</H2>
+            {Object.keys(PAYMENT_TYPES).map(paymentType => {
+              // TODO: впендошить иконку
+              if (paymentType === PAYMENT_TYPES.APPLE_PAY)
+                return (
+                  <Button
+                    key={paymentType}
+                    block
+                    onPress={this.goToPayment(paymentType)}
+                  >
+                    <Text>{PAYMENT_TYPES[paymentType]}</Text>
+                  </Button>
+                );
 
-            <H2 style={styles.title2}>Сумма к оплате</H2>
-            <Text>{price}</Text>
-
-            <H2 style={styles.title2}>Услуги</H2>
-            <Text>{subjects}</Text>
-
-            <H2 style={styles.title2}>Специалист</H2>
-            <Avatar path={executor && executor.avatar} />
-            <Text>{executor && executor.name}</Text>
+              return (
+                <Button
+                  key={paymentType}
+                  block
+                  onPress={this.goToPayment(paymentType)}
+                >
+                  <Text>{PAYMENT_TYPES[paymentType]}</Text>
+                </Button>
+              );
+            })}
           </Content>
-
-          <Footer>
-            <Button onPress={this.goToPayment}>
-              <Text>Выбрать способ оплаты</Text>
-            </Button>
-            <Button transparent>
-              <Text>Это ошибка</Text>
-            </Button>
-          </Footer>
         </Container>
       </StyleProvider>
     );
@@ -105,7 +65,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  card: {
+  content: {
     padding: 20,
+    backgroundColor: '#ffffff',
   },
 });

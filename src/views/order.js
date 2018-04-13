@@ -39,7 +39,6 @@ export default class Order extends React.Component {
     const {state: {params: {orderId}}} = this.props.navigation;
 
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
-    console.log('AAAAAAA', result);
     Globals.order = result.orders[0];
     this.updateTitle();
     this.setState({loading: false});
