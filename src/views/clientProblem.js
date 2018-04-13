@@ -15,6 +15,8 @@ import {
   H1,
   H2,
   H3,
+  List,
+  ListItem,
 } from 'native-base';
 import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
@@ -37,16 +39,23 @@ export default class Order extends React.Component {
       <StyleProvider style={getTheme(theme)}>
         <Container>
           <Content style={styles.content} withPadding>
-            <H2 style={styles.title2}>Мы свяжемся со специалистом</H2>
-            <Text>
-              Спасибо, что сообщили об ошибке. Мы решим вопрос со специалистом
-              и, при необходимости, свяжемся с вами.
+            <H2 style={styles.title2}>Мы&nbsp;свяжемся со&nbsp;специалистом</H2>
+            <Text style={styles.paragraph}>
+              Спасибо, что сообщили об&nbsp;ошибке. Мы&nbsp;решим вопрос
+              со&nbsp;специалистом&nbsp;и, при необходимости, свяжемся
+              с&nbsp;вами.
             </Text>
           </Content>
 
-          <Footer>
-            <Text style={styles.textSmall}>Нужна помощь?</Text>
-            <Text onPress={this.callToProfi}>{PROFI_PHONE_NUMBER}</Text>
+          <Footer style={styles.footer}>
+            <List>
+              <ListItem>
+                <Text style={styles.textSmall}>Нужна помощь?</Text>
+              </ListItem>
+              <ListItem>
+                <Text onPress={this.callToProfi}>{PROFI_PHONE_NUMBER}</Text>
+              </ListItem>
+            </List>
           </Footer>
         </Container>
       </StyleProvider>
@@ -56,16 +65,28 @@ export default class Order extends React.Component {
 
 const styles = StyleSheet.create({
   title2: {
-    paddingBottom: 3,
+    paddingBottom: 10,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  paragraph: {
+    lineHeight: 25,
   },
   textSmall: {
     fontSize: 13,
     color: TEXT_GRAY,
+    textAlign: 'center',
   },
   content: {
     padding: 20,
     backgroundColor: '#ffffff',
+  },
+  alignCenter: {
+    textAlign: 'center',
+  },
+  footer: {
+    height: 60,
+    textAlign: 'center',
+    lineHeight: 24,
   },
 });
