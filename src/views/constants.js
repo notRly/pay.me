@@ -6,6 +6,10 @@ export const GQL_HOST =
 export const SPECIALIST = 'specialist';
 export const CLIENT = 'client';
 
+export REQUEST_PAYMENT_STATUS = 'REQUEST_PAYMENT';
+export RECEIVED_PAYMENT_STATUS = 'RECEIVED_PAYMENT';
+export SENDED_PAYMENT_STATUS = 'SENDED_PAYMENT';
+
 export const ORDER_QUERY = `
   query getOrderDetails($orderId: ID!) {
     orders(id: [$orderId]) {
@@ -29,6 +33,14 @@ export const ORDER_QUERY = `
           name
         }
       }
+    }
+  }
+`;
+
+export const UPDATE_ORDER_QUERY = `
+  mutation updateOrderParams($input: updateOrderInput!) {
+    updateOrder(input: $input) {
+      clientMutationId
     }
   }
 `;
