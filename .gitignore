@@ -1,5 +1,10 @@
 # Most part of this file is created by https://www.gitignore.io
 
+
+# Expo
+.expo
+
+
 ### Node ###
 # Logs
 logs

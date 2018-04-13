@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {PROFI_RED_COLOR} from './constants';
+import {PROFI_RED_COLOR, WHITE_COLOR} from './constants';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default ({onPress = () =>{}, title, disabled}): React.Node => {
@@ -18,8 +18,14 @@ export default ({onPress = () =>{}, title, disabled}): React.Node => {
 
 const styles = StyleSheet.create({
   button: {
-      elevation: 4,
+      width: 250,
       backgroundColor: PROFI_RED_COLOR,
-      borderRadius: 2,
+      borderRadius: 4,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 15,
+    paddingVertical: 15,
+    color: WHITE_COLOR,
   },
 });
