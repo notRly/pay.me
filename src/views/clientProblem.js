@@ -1,5 +1,5 @@
 import * as React from 'react';
-import call from 'react-native-phone-call'
+import call from 'react-native-phone-call';
 import {StyleSheet} from 'react-native';
 import {
   StyleProvider,
@@ -22,7 +22,6 @@ import theme from '../../native-base-theme/variables/platform';
 import {PROFI_PHONE_NUMBER, ORDER_TITLE} from './constants';
 import {TEXT_GRAY} from '../ui/constants';
 
-
 export default class Order extends React.Component {
   static navigationOptions = ORDER_TITLE;
 
@@ -30,21 +29,18 @@ export default class Order extends React.Component {
     call({
       number: PROFI_PHONE_NUMBER,
       prompt: true,
-    }).catch(console.error)
+    }).catch(console.error);
   };
 
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
-          <Content>
-            <H2 style={styles.title2}>
-              Мы свяжемся со специалистом
-            </H2>
+          <Content style={styles.content} withPadding>
+            <H2 style={styles.title2}>Мы свяжемся со специалистом</H2>
             <Text>
-              Спасибо, что сообщили об ошибке.
-              Мы решим вопрос со специалистом и, при необходимости,
-              свяжемся с вами.
+              Спасибо, что сообщили об ошибке. Мы решим вопрос со специалистом
+              и, при необходимости, свяжемся с вами.
             </Text>
           </Content>
 
@@ -67,5 +63,9 @@ const styles = StyleSheet.create({
   textSmall: {
     fontSize: 13,
     color: TEXT_GRAY,
+  },
+  content: {
+    padding: 20,
+    backgroundColor: '#ffffff',
   },
 });

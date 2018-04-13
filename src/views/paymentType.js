@@ -3,7 +3,6 @@ import {request} from 'graphql-request';
 import {StyleSheet} from 'react-native';
 import {
   StyleProvider,
-  Card,
   Button,
   Title,
   Text,

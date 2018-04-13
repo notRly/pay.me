@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {request} from 'graphql-request';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   StyleProvider,
   ActionSheet,
@@ -15,6 +15,11 @@ import {
   H1,
   H2,
   H3,
+  Row,
+  ListItem,
+  List,
+  Left,
+  Body,
 } from 'native-base';
 import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
@@ -55,8 +60,8 @@ export default class Order extends React.Component {
         if (!problem) return;
         const {navigate} = this.props.navigation;
         navigate('ClientProblem', {problem});
-      }
-    )
+      },
+    );
   };
 
   render() {
@@ -84,28 +89,53 @@ export default class Order extends React.Component {
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
-          <Content>
-            <H2 style={styles.title2}>Имя клиента</H2>
-            <Text>{name}</Text>
+          <Content style={styles.content} withPadding>
+            <View>
+              <H2 style={styles.title2}>Имя клиента</H2>
+              <Text>{name}</Text>
+            </View>
 
-            <H2 style={styles.title2}>Сумма к оплате</H2>
-            <Text>{price}</Text>
+            <View style={styles.withPadding}>
+              <H2 style={styles.title2}>Сумма к оплате</H2>
+              <Text>{price}</Text>
+            </View>
 
-            <H2 style={styles.title2}>Услуги</H2>
-            <Text>{subjects}</Text>
+            <View style={styles.withPadding}>
+              <H2 style={styles.title2}>Услуги</H2>
+              <Text>{subjects}</Text>
+            </View>
 
-            <H2 style={styles.title2}>Специалист</H2>
-            <Avatar path={executor && executor.avatar} />
-            <Text>{executor && executor.name}</Text>
+            <View style={styles.withPadding}>
+              <H2 style={styles.title2}>Специалист</H2>
+              <List style={styles.list}>
+                <ListItem avatar>
+                  <Left style={styles.withoutPadding}>
+                    <Avatar path={executor && executor.avatar} />
+                  </Left>
+                  <Body>
+                    <Text>{executor && executor.name}</Text>
+                    <Text note>
+                      Тут можно написать преподаватель чонить там
+                    </Text>
+                  </Body>
+                </ListItem>
+              </List>
+            </View>
           </Content>
 
-          <Footer>
-            <Button block onPress={this.goToPayment}>
-              <Text>Выбрать способ оплаты</Text>
-            </Button>
-            <Button transparent onPress={this.showProblemActions}>
-              <Text>Это ошибка</Text>
-            </Button>
+          <Footer style={styles.footer}>
+            <List>
+              <ListItem style={styles.footerItem}>
+                <Button block onPress={this.goToPayment}>
+                  <Text>Выбрать способ оплаты</Text>
+                </Button>
+              </ListItem>
+              <ListItem style={styles.footerItem}>
+                <Button transparent onPress={this.showProblemActions}>
+                  <Text>Это ошибка</Text>
+                </Button>
+              </ListItem>
+            </List>
           </Footer>
         </Container>
       </StyleProvider>
@@ -119,7 +149,29 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  card: {
+  withPadding: {
+    paddingTop: 20,
+  },
+  withoutPadding: {
+    padding: 0,
+  },
+  list: {
+    paddingTop: 10,
+  },
+  content: {
     padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  footer: {
+    padding: 20,
+    height: 130,
+    alignItems: 'center',
+  },
+  footerItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 0,
+    padding: 0,
+    margin: 0,
   },
 });
