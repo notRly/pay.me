@@ -28,20 +28,24 @@ export default class PaymentType extends React.Component {
   render() {
     return (
       <StyleProvider style={getTheme(theme)}>
-        <Container>
+        <Container style={styles.container}>
           <Content style={styles.content} withPadding>
             <H2 style={styles.title2}>Выберите способ оплаты</H2>
-            <Icon name="logo-apple" style={{color: '#999'}} />
+
             {Object.keys(PAYMENT_TYPES).map(paymentType => {
               // TODO: впендошить иконку
-              if (paymentType === PAYMENT_TYPES.APPLE_PAY)
+              if (PAYMENT_TYPES[paymentType] === PAYMENT_TYPES.APPLE_PAY)
                 return (
                   <Button
                     key={paymentType}
+                    transparent
+                    dark
                     block
+                    style={styles.button}
                     onPress={this.goToPayment(paymentType)}
                   >
-                    <Text>{PAYMENT_TYPES[paymentType]}</Text>
+                    <Text>{PAYMENT_TYPES[paymentType]} </Text>
+                    <Icon name="logo-apple" style={styles.iosIcon} />
                   </Button>
                 );
 
@@ -49,6 +53,9 @@ export default class PaymentType extends React.Component {
                 <Button
                   key={paymentType}
                   block
+                  transparent
+                  dark
+                  style={styles.button}
                   onPress={this.goToPayment(paymentType)}
                 >
                   <Text>{PAYMENT_TYPES[paymentType]}</Text>
@@ -63,13 +70,25 @@ export default class PaymentType extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+  },
   title2: {
-    paddingBottom: 3,
+    paddingBottom: 40,
     fontSize: 20,
+    textAlign: 'center',
     fontWeight: 'bold',
   },
   content: {
     padding: 20,
     backgroundColor: '#ffffff',
+  },
+  button: {
+    height: 60,
+  },
+  iosIcon: {
+    fontSize: 30,
+    color: '#999',
+    marginLeft: -12,
   },
 });

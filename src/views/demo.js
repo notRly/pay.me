@@ -53,6 +53,11 @@ export default class Demo extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
   content: {
     padding: 20,
     backgroundColor: '#ffffff',
