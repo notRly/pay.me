@@ -9,7 +9,6 @@ import {
   StyleProvider,
 } from 'native-base';
 import {CreditCards} from '../ui';
-import {Button, Text, Container, StyleProvider} from 'native-base';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 
