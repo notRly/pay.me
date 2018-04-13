@@ -1,7 +1,7 @@
 import Globals from '../navigation/globals';
 
-// export const STEND_HOST = 'http://pay-me-api-0eb0e41c-pay-me-api.warp.noregress.shot.x340.org';
-export const STEND_HOST = 'http://localhost:8200';
+export const STEND_HOST = 'http://pay-me-api-0eb0e41c-pay-me-api.warp.noregress.shot.x340.org';
+//export const STEND_HOST = 'http://localhost:8200';
 export const GQL_HOST =
   STEND_HOST + '/graphql';
 
