@@ -3,6 +3,9 @@ import Globals from '../navigation/globals';
 export const GQL_HOST =
   'http://pay-me-api-0eb0e41c-pay-me-api.warp.noregress.shot.x340.org:8200/graphql';
 
+export const SPECIALIST = 'specialist';
+export const CLIENT = 'client';
+
 export const ORDER_QUERY = `
   query getOrderDetails($orderId: ID!) {
     orders(id: [$orderId]) {
