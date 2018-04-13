@@ -8,16 +8,21 @@ import {
   Content,
   StyleProvider,
 } from 'native-base';
+
+import Globals from '../navigation/globals';
+import {CreditCards} from '../ui';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
+import {SPECIALIST, CLIENT} from './constants';
 
 export default class Demo extends React.Component {
   static navigationOptions = {
     title: 'Demo',
   };
 
-  goToOrderScreen = () => {
+  goToChoseOrder = (version) => () => {
     const {navigate} = this.props.navigation;
+    Globals.version = version;
     navigate('ChooseOrder');
   };
 
@@ -34,11 +39,15 @@ export default class Demo extends React.Component {
             <Button
               style={styles.marginTop}
               block
-              onPress={this.goToOrderScreen}
+              onPress={this.goToChoseOrder(CLIENT)}
             >
               <Text>Я клиент</Text>
             </Button>
-            <Button block style={styles.marginTop}>
+            <Button
+              block
+              style={styles.marginTop}
+              onPress={this.goToChoseOrder(SPECIALIST)}
+            >
               <Text>Я специалист</Text>
             </Button>
 

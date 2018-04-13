@@ -20,17 +20,21 @@ import {
   List,
   Left,
   Body,
+  Item,
+  Icon,
+  Input,
 } from 'native-base';
 import {upperFirst} from '../utils';
 import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
-import {ORDER_QUERY, ORDER_TITLE, CLIENT_PROBLEMS, GQL_HOST} from './constants';
+import {CLIENT, ORDER_QUERY, ORDER_TITLE, CLIENT_PROBLEMS, GQL_HOST} from './constants';
 
 export default class Order extends React.Component {
   state = {
     loading: true,
+    price: null,
   };
 
   static navigationOptions = ORDER_TITLE;
@@ -57,6 +61,14 @@ export default class Order extends React.Component {
     const {navigate} = this.props.navigation;
     navigate('PaymentType');
   };
+
+  goToRequestPayment = () => {
+    // TODO
+  };
+
+  onChangePrice = (price) => {
+    this.setState({price});
+  }
 
   showProblemActions = () => {
     const CANCEL_INDEX = 4;
@@ -96,20 +108,74 @@ export default class Order extends React.Component {
       );
 
     const {name, price, subjects, aim, executor} = Globals.order;
+
+    if (Globals.version === CLIENT)
+      return (
+        <StyleProvider style={getTheme(theme)}>
+          <Container>
+            <Content style={styles.content} withPadding>
+              <View>
+                <H2 style={styles.title2}>Имя клиента</H2>
+                <Text>{name}</Text>
+              </View>
+
+              <View style={styles.withPadding}>
+                <H2 style={styles.title2}>Сумма к оплате</H2>
+                <Text>{price}</Text>
+              </View>
+
+              <View style={styles.withPadding}>
+                <H2 style={styles.title2}>Услуги</H2>
+                <Text>{upperFirst(subjects)}</Text>
+                {aim && <Text note>{aim}</Text>}
+              </View>
+
+              <View style={styles.withPadding}>
+                <H2 style={styles.title2}>Специалист</H2>
+                <List style={styles.list}>
+                  <ListItem avatar>
+                    <Left style={styles.withoutPadding}>
+                      <Avatar path={executor && executor.avatar} />
+                    </Left>
+                    <Body>
+                      <Text>{executor && executor.name}</Text>
+                      <Text note>
+                        {executor &&
+                          upperFirst(
+                            (executor.topServices || [])
+                              .map(({name}) => name)
+                              .join(', '),
+                          )}
+                      </Text>
+                    </Body>
+                  </ListItem>
+                </List>
+              </View>
+            </Content>
+
+            <Footer style={styles.footer}>
+              <List>
+                <ListItem style={styles.footerItem}>
+                  <Button block onPress={this.goToPaymentType}>
+                    <Text>Выбрать способ оплаты</Text>
+                  </Button>
+                </ListItem>
+                <ListItem style={styles.footerItem}>
+                  <Button transparent onPress={this.showProblemActions}>
+                    <Text>Это ошибка</Text>
+                  </Button>
+                </ListItem>
+              </List>
+            </Footer>
+          </Container>
+        </StyleProvider>
+      );
+
+    // Для спеца
     return (
       <StyleProvider style={getTheme(theme)}>
         <Container>
           <Content style={styles.content} withPadding>
-            <View>
-              <H2 style={styles.title2}>Имя клиента</H2>
-              <Text>{name}</Text>
-            </View>
-
-            <View style={styles.withPadding}>
-              <H2 style={styles.title2}>Сумма к оплате</H2>
-              <Text>{price}</Text>
-            </View>
-
             <View style={styles.withPadding}>
               <H2 style={styles.title2}>Услуги</H2>
               <Text>{upperFirst(subjects)}</Text>
@@ -117,38 +183,25 @@ export default class Order extends React.Component {
             </View>
 
             <View style={styles.withPadding}>
-              <H2 style={styles.title2}>Специалист</H2>
-              <List style={styles.list}>
-                <ListItem avatar>
-                  <Left style={styles.withoutPadding}>
-                    <Avatar path={executor && executor.avatar} />
-                  </Left>
-                  <Body>
-                    <Text>{executor && executor.name}</Text>
-                    <Text note>
-                      {executor &&
-                        upperFirst(
-                          (executor.topServices || [])
-                            .map(({name}) => name)
-                            .join(', '),
-                        )}
-                    </Text>
-                  </Body>
-                </ListItem>
-              </List>
+              <H2 style={styles.title2}>Стоимость работы</H2>
+              <Item success={!!this.state.price}>
+                <Input
+                  autoFocus={true}
+                  keyboardType='numeric'
+                  value={this.state.price}
+                  disabled={this.state.loading}
+                  onChangeText={this.onChangePrice}
+                />
+                {!!this.state.price && <Icon name='checkmark-circle' />}
+              </Item>
             </View>
           </Content>
 
           <Footer style={styles.footer}>
             <List>
               <ListItem style={styles.footerItem}>
-                <Button block onPress={this.goToPaymentType}>
-                  <Text>Выбрать способ оплаты</Text>
-                </Button>
-              </ListItem>
-              <ListItem style={styles.footerItem}>
-                <Button transparent onPress={this.showProblemActions}>
-                  <Text>Это ошибка</Text>
+                <Button block onPress={this.goToRequestPayment}>
+                  <Text>Продолжить</Text>
                 </Button>
               </ListItem>
             </List>

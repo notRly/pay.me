@@ -26,12 +26,14 @@ import {upperFirst} from '../utils';
 import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
-import {ORDER_QUERY, GQL_HOST} from './constants';
+import {ORDER_QUERY, GQL_HOST, CLIENT} from './constants';
 
 export default class ChooseOrder extends React.Component {
-  static navigationOptions = {
-    title: 'Оплатить заказ',
-  };
+  static navigationOptions = () => ({
+    title: Globals.version === CLIENT
+      ? 'Оплатить заказ'
+      : 'Выставить счёт клиенту',
+  });
 
   state = {
     orderId: '12860037',
@@ -52,7 +54,7 @@ export default class ChooseOrder extends React.Component {
       if (!result.orders[0]) throw 'not found';
 
       Globals.order = result.orders[0];
-      this.setState({loading: false});
+      this.setState({loading: false, fetchFailed: false});
 
       const {navigate} = this.props.navigation;
       navigate('Order', {alreadyLoaded: true});
@@ -74,6 +76,7 @@ export default class ChooseOrder extends React.Component {
               <Item error={fetchFailed}>
                 <Input
                   autoFocus={true}
+                  keyboardType='numeric'
                   value={orderId}
                   disabled={loading}
                   onChangeText={this.changeOrderId}
@@ -92,7 +95,7 @@ export default class ChooseOrder extends React.Component {
               onPress={this.findOrder}
               disabled={loading || fetchFailed || !orderId}
             >
-              {loading ? <Spinner color="red" /> : <Text>Перейти</Text>}
+              {loading ? <Spinner color="red" /> : <Text>Продолжить</Text>}
             </Button>
           </Footer>
         </Container>
