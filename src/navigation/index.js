@@ -9,7 +9,7 @@ import {
   ClientProblem,
   Browser,
   Payment,
-  Success
+  PaymentSuccess
 } from '../views';
 
 export default StackNavigator(
@@ -35,8 +35,8 @@ export default StackNavigator(
     Payment: {
       screen: Payment,
     },
-    Success: {
-      screen: Success,
+    PaymentSuccess: {
+      screen: PaymentSuccess,
     }
   },
   {
