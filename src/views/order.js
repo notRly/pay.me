@@ -41,7 +41,10 @@ export default class Order extends React.Component {
     this.setState({loading: false});
   }
 
-  goToPayment = () => {};
+  goToPaymentType = () => {
+    const {navigate} = this.props.navigation;
+    navigate('PaymentType');
+  };
 
   showProblemActions = () => {
     const CANCEL_INDEX = 4;
@@ -100,7 +103,7 @@ export default class Order extends React.Component {
           </Content>
 
           <Footer>
-            <Button block onPress={this.goToPayment}>
+            <Button block onPress={this.goToPaymentType}>
               <Text>Выбрать способ оплаты</Text>
             </Button>
             <Button transparent onPress={this.showProblemActions}>
