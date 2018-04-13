@@ -37,6 +37,7 @@ import {
   GQL_HOST,
 } from './constants';
 
+
 export default class Order extends React.Component {
   state = {
     loading: true,
@@ -69,7 +70,8 @@ export default class Order extends React.Component {
   };
 
   goToRequestPayment = () => {
-    // TODO
+    const {navigate} = this.props.navigation;
+    navigate('Payment', {paymentType: 'CARD_TO_CARD'});
   };
 
   onChangePrice = price => {
@@ -113,7 +115,7 @@ export default class Order extends React.Component {
         </Container>
       );
 
-    const {name, price, subjects, aim, executor} = Globals.order;
+    const {name, price, subjects, aim, executor, paymentStatus} = Globals.order;
 
     if (Globals.version === CLIENT)
       return (

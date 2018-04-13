@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import {Text, View, StyleSheet } from 'react-native';
-import {CreditCardInput} from 'react-native-credit-card-input';
+import {CreditCardInput as CardClient} from 'react-native-credit-card-input';
+import {CreditCardInput as CardSpec} from 'react-native-credit-card-input-fork';
 import {PAYMENT_TYPES} from './constants';
 import {WHITE_COLOR} from '../ui/constants';
+import Globals from '../navigation/globals';
+import {SPECIALIST, CLIENT, SENDED_PAYMENT_STATUS, REQUEST_PAYMENT_STATUS} from './constants';
+import {updateStatus} from './actions';
+
+ 
 import {
     Input,
     Button,
@@ -12,10 +18,29 @@ export default class Payment extends Component {
 
     constructor(props) {
         super(props);
+        state = {
+            cvc: "",
+            expiry: "",
+            name: "",
+            number: "",
+            type: '',
+        };
     }
 
-    _onChangeCardToCard = e => {
-        console.log(e);
+    validateCardData = () =>{}
+
+     onChange = async (form) => {
+        const {cvc, expiry, name, number, type} = form.values;
+        this.setState({
+            cvc: cvc,
+            expiry: expiry,
+            name: name,
+            number: number,
+            type: type,
+        });
+        try {
+            await AsyncStorage.setItem('CardData', form.values);
+        } catch (error) {}
     }
 
     getPaymentComponent = type => {
@@ -25,10 +50,15 @@ export default class Payment extends Component {
               typPay = 
               <View>
                 <Text>Введите данные вашей карты</Text>
-                <CreditCardInput 
-                    onChange={this._onChangeCardToCard}
-                    requiresName={true}
-                    requiresCVC={true}/>
+                {Globals.version === CLIENT &&
+                    <CardClient 
+                        onChange={this.onChange}
+                        requiresName={true}
+                        requiresCVC={true}/>}
+                {Globals.version === SPECIALIST && 
+                    <CardSpec 
+                        onChange={this.onChange}
+                        requiresName={true}/>}
                 <View style={styles.formCash}>
                     <Text>Введите сумму оплаты:</Text>
                     <Input 
@@ -41,7 +71,10 @@ export default class Payment extends Component {
                       style={styles.button}
                       onPress={this.goToPayment}
                     >
-                      <Text style={styles.continue}>Продолжить</Text>
+                    {Globals.version === CLIENT &&
+                      <Text style={styles.continue}>Оплатить заказ</Text>}
+                    {Globals.version === SPECIALIST &&
+                      <Text style={styles.continue}>Продолжить</Text>}
                     </Button>
                     </View>
                 </View>
@@ -53,9 +86,16 @@ export default class Payment extends Component {
         return typPay;
     }
 
-    goToPayment = () => {
-        this.props.navigation.navigate('Success');
-      };
+    goToPayment = async () => {
+        if(Globals.version === CLIENT) {
+            updateStatus(SENDED_PAYMENT_STATUS);
+            this.props.navigation.navigate('Order', {orderId: Globals.order.id});
+            return;
+        }
+        
+        updateStatus(REQUEST_PAYMENT_STATUS);
+        this.props.navigation.navigate('Order', {orderId: Globals.order.id});
+    }
 
     render() {
         const {state: {params: {paymentType}}} = this.props.navigation;

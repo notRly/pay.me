@@ -25,6 +25,7 @@ export const ORDER_QUERY = `
       phone
       email
       price: stoim
+      paymentStatus
       executor {
         name
         avatar(width: 90, height: 120)
