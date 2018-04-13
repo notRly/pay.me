@@ -74,19 +74,17 @@ const styles = StyleSheet.create({
   },
   textSmall: {
     fontSize: 13,
+    alignSelf: 'center',
     color: TEXT_GRAY,
-    textAlign: 'center',
   },
   content: {
     padding: 20,
     backgroundColor: '#ffffff',
   },
-  alignCenter: {
-    textAlign: 'center',
-  },
   footer: {
+    backgroundColor: '#ffffff',
+    alignSelf: 'center',
     height: 60,
-    textAlign: 'center',
     lineHeight: 24,
   },
 });

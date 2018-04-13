@@ -42,6 +42,7 @@ import {
   GQL_HOST,
   STEND_HOST,
   SENDED_PAYMENT_STATUS,
+  REQUEST_PAYMENT_STATUS,
   RECEIVED_PAYMENT_STATUS,
 } from './constants';
 
@@ -65,6 +66,9 @@ export default class Order extends React.Component {
 
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId});
     Globals.order = result.orders[0];
+
+    if (Globals.order.paymentStatus === REQUEST_PAYMENT_STATUS)
+      this.setState({price: Globals.order.paymentPrice});
   };
 
   updateTitle = () => {
@@ -84,24 +88,31 @@ export default class Order extends React.Component {
   goToCheck = () => {
     const {navigate} = this.props.navigation;
     const {order} = Globals;
-    navigate('Browser', {url: STEND_HOST + '/getcheck?' + qs.stringify({
-      orderId: order.id,
-      date: moment(order.receivd).lang('ru').format('LLL'),
-      specialist: (order.executor || {}).name,
-      inn: '7804034404',
-      phone: order.phone,
-      aim: order.aim || order.subjects,
-      price: order.price,
-      paymentType: ''
-    })});
-  }
+    navigate('Browser', {
+      url:
+        STEND_HOST +
+        '/getcheck?' +
+        qs.stringify({
+          orderId: order.id,
+          date: moment(order.receivd)
+            .lang('ru')
+            .format('LLL'),
+          specialist: (order.executor || {}).name,
+          inn: '7804034404',
+          phone: order.phone,
+          aim: order.aim || order.subjects,
+          price: order.price,
+          paymentType: '',
+        }),
+    });
+  };
 
   onChangePrice = price => {
     this.setState({price});
   };
 
   applyPayment = () => {
-    updateStatus(RECEIVED_PAYMENT_STATUS);
+    updateStatus(RECEIVED_PAYMENT_STATUS, this.state.price);
     this.props.navigation.navigate('PaymentSuccess');
   };
 
@@ -146,7 +157,15 @@ export default class Order extends React.Component {
         </StyleProvider>
       );
 
-    const {name, price, subjects, aim, executor, paymentStatus} = Globals.order;
+    const {
+      name,
+      price,
+      paymentPrice,
+      subjects,
+      aim,
+      executor,
+      paymentStatus,
+    } = Globals.order;
 
     if (Globals.version === CLIENT)
       return (
@@ -160,7 +179,7 @@ export default class Order extends React.Component {
 
               <View style={styles.withPadding}>
                 <H2 style={styles.title2}>Сумма к оплате</H2>
-                <Text style={styles.price}>{price} ₽</Text>
+                <Text style={styles.price}>{paymentPrice || price} ₽</Text>
               </View>
 
               <View style={styles.withPadding}>
@@ -242,29 +261,33 @@ export default class Order extends React.Component {
                   autoFocus={true}
                   keyboardType="numeric"
                   value={this.state.price}
-                  disabled={this.state.loading}
+                  disabled={
+                    this.state.loading ||
+                    paymentStatus === REQUEST_PAYMENT_STATUS
+                  }
                   onChangeText={this.onChangePrice}
                 />
                 {!!this.state.price && <Icon name="checkmark-circle" />}
               </Item>
             </View>
+            {paymentStatus === SENDED_PAYMENT_STATUS ? (
+              <Button
+                transparent
+                style={styles.button}
+                onPress={this.applyPayment}
+              >
+                <Text>Подтвердить получение платежа</Text>
+              </Button>
+            ) : (
+              <Button
+                block
+                style={styles.button}
+                onPress={this.goToRequestPayment}
+              >
+                <Text transparent>Продолжить</Text>
+              </Button>
+            )}
           </Content>
-
-          <Footer style={styles.footer2}>
-            <List>
-              <ListItem style={styles.footerItem}>
-                {paymentStatus === SENDED_PAYMENT_STATUS ? (
-                  <Button transparent onPress={this.applyPayment}>
-                    <Text>Подтвердить получение платежа</Text>
-                  </Button>
-                ) : (
-                  <Button block onPress={this.goToRequestPayment}>
-                    <Text transparent>Продолжить</Text>
-                  </Button>
-                )}
-              </ListItem>
-            </List>
-          </Footer>
         </Container>
       </StyleProvider>
     );
@@ -316,5 +339,8 @@ const styles = StyleSheet.create({
   },
   fz20: {
     fontSize: 20,
+  },
+  button: {
+    marginTop: 20,
   },
 });

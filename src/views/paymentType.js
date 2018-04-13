@@ -15,7 +15,8 @@ import {
 } from 'native-base';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
-import {ORDER_TITLE, PAYMENT_TYPES} from './constants';
+import {ORDER_TITLE, PAYMENT_TYPES, SENDED_PAYMENT_STATUS} from './constants';
+import {updateStatus} from './actions';
 
 export default class PaymentType extends React.Component {
   static navigationOptions = {
@@ -23,8 +24,21 @@ export default class PaymentType extends React.Component {
   };
 
   goToPayment = paymentType => () => {
+    if (paymentType === 'CASH') {
+      updateStatus(SENDED_PAYMENT_STATUS);
+      this.props.navigation.navigate('PaymentSuccess');
+      return;
+    }
     if (paymentType)
       this.props.navigation.navigate('Payment', {paymentType: paymentType});
+  };
+
+  openBrowser = () => {
+    const {navigate} = this.props.navigation;
+    navigate('Browser', {
+      url: 'http://profi.ru/documents/oferta/',
+      back: 'Home',
+    });
   };
 
   render() {
@@ -65,6 +79,15 @@ export default class PaymentType extends React.Component {
               );
             })}
           </Content>
+          <Footer style={styles.footer2}>
+            <Text onPress={this.openBrowser} style={styles.oferta}>
+              Выбирая способ оплаты, вы&nbsp;соглашаетесь с&nbsp;<Text
+                style={styles.link}
+              >
+                условиями оферты
+              </Text>
+            </Text>
+          </Footer>
         </Container>
       </StyleProvider>
     );
@@ -92,5 +115,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#999',
     marginLeft: -12,
+  },
+  link: {
+    color: '#0088c4',
+  },
+  oferta: {
+    paddingTop: 7,
   },
 });
