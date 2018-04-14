@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {CreditCardInput as ClientCard} from 'react-native-credit-card-input';
-import {CreditCardInput as SpecCard} from 'react-native-credit-card-input-fork';
-import {PAYMENT_TYPES, SPECIALIST, CLIENT} from './constants';
+import {CreditCardInput} from 'react-native-credit-card-input-new';
+import {
+    PAYMENT_TYPES, 
+    SPECIALIST,
+    CLIENT,
+    REQUEST_PAYMENT_STATUS,
+    SENDED_PAYMENT_STATUS
+} from './constants';
 import {WHITE_COLOR} from '../ui/constants';
 import {
   Input,
@@ -21,18 +26,12 @@ import {
     updateStatus,
 } from './actions';
 
-
-
 export default class Payment extends Component {
   constructor(props) {
     super(props);
     this.state = {
         card: {
-            cvc: '',
-            expiry: '',
-            name: '',
             number: '',
-            type: '',
         }
     };
   }
@@ -41,14 +40,10 @@ export default class Payment extends Component {
     const {cvc, expiry, name, number, type} = e.values;
     this.setState({
         card: {
-            cvc: cvc,
-            expiry: expiry,
-            name: name,
             number: number,
-            type: type,
         }
     });
-    const isVaidCard = isVaidCreditCard(this.state.card, Globals.version);
+    const isVaidCard = isVaidCreditCard(this.state.card);
     if(isVaidCard) {
         saveCardDataToLocalStorage(this.state.card)
     }
@@ -59,7 +54,7 @@ export default class Payment extends Component {
   };
 
   getPaymentComponent = type => {
-    const isVaidCard = isVaidCreditCard(this.state.card, Globals.version);
+    const isVaidCard = isVaidCreditCard(this.state.card);
     let typPay;
     switch (type) {
       case 'CARD_TO_CARD':
@@ -67,17 +62,7 @@ export default class Payment extends Component {
           typPay = (
             <View>
               <H2 style={styles.title2}>Введите данные вашей карты</H2>
-              {Globals.version === CLIENT && 
-                <ClientCard
-                    onChange={this.onChange}
-                    requiresName={true}
-                    requiresCVC={true}
-              />}
-              {Globals.version === SPECIALIST && 
-                <SpecCard
-                    onChange={this.onChange}
-                    requiresName={true}
-              />}
+                <CreditCardInput onChange={this.onChange} />
               <Button
                 key={type}
                 block
@@ -101,7 +86,7 @@ export default class Payment extends Component {
     return typPay;
   };
 
-  goToPayment = async () => {
+  goToPayment = () => {
     if(Globals.version === CLIENT) {
         updateStatus(SENDED_PAYMENT_STATUS);
         this.props.navigation.navigate('PaymentSuccess');

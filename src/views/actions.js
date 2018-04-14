@@ -1,6 +1,9 @@
+import qs from 'qs';
+import moment from 'moment';
+import 'moment/locale/ru';
 import {request} from 'graphql-request';
 import Globals from '../navigation/globals';
-import {UPDATE_ORDER_QUERY, GQL_HOST, SPECIALIST, CLIENT} from './constants';
+import {UPDATE_ORDER_QUERY, GQL_HOST, STEND_HOST, SPECIALIST, CLIENT} from './constants';
 
 
 export const updateStatus = async (status, price) => {
@@ -24,22 +27,34 @@ export const getSavedCardFromLocalStorage = async () => {
   }
 }
 
-export const isVaidCreditCard = (card, version) => {
-  const {cvc, expiry, name, number, type} = card;
-  const isCvc = /[\d]{0,3}/.test(cvc) && cvc.length === 3;
-  const isExpiry = expiry.split('/').length === 2 
-    && expiry.split('/')
-      .map(i => /[/d]{0,2}/.test(i)? i : null)
-      .filter(Boolean).length === 2;
-  const isName = name.split(' ').length === 2 
-    && name.split(' ')
-      .map(i => i.length > 2  ? i : null)
-      .filter(Boolean).length === 2;
+export const isVaidCreditCard = (card) => {
+  const {number} = card;
   const isNum = number.split(' ')
     .map(i => i.length === 4 && /\d{0,4}/.test(i) ? i : null)
     .filter(Boolean).length === 4;
   
-  return version === CLIENT
-    ? isCvc && isExpiry && isName && isNum
-    : isName && isNum;
+  return isNum;
 }
+
+export const goToCheck = (navigation) => {
+    const {navigate} = navigation;
+    const {order} = Globals;
+    if (!order) return;
+    navigate('Browser', {
+      url:
+        STEND_HOST +
+        '/getcheck?' +
+        qs.stringify({
+          orderId: order.id,
+          date: moment(order.receivd)
+            .lang('ru')
+            .format('LLL'),
+          specialist: (order.executor || {}).name,
+          inn: '7804034404',
+          phone: order.phone,
+          aim: order.aim || order.subjects,
+          price: order.price,
+          paymentType: Globals.paymentType,
+        }),
+    });
+  };
