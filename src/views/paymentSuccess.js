@@ -101,7 +101,7 @@ export default class PaymentSuccess extends React.Component {
       return (
         <StyleProvider style={getTheme(theme)}>
           <Container>
-            <Content>
+            <Content style={styles.content}>
               <Spinner color="red" />
             </Content>
           </Container>
@@ -214,7 +214,7 @@ export default class PaymentSuccess extends React.Component {
           return (
             <StyleProvider style={getTheme(theme)}>
               <Container>
-                <Content>
+                <Content style={styles.content}>
                   <Text style={styles.title2}>Заказ оплачен!</Text>
                   <Text style={styles.textEmail}>
                     Вы подтвердили, что клиент оплатил работу наличными. Заказ
