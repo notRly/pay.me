@@ -26,8 +26,11 @@ import {
   ORDER_TITLE,
 } from './constants';
 
+export const AUTO_REFRESH = 5000;
+
 export default class PaymentSuccess extends React.Component {
-  state = {loading: true};
+  state = {loading: true, silentLoading: false, currentStatus: null};
+  interval = null;
 
   static navigationOptions = (params) => Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
    ? ORDER_TITLE(params)
@@ -35,6 +38,7 @@ export default class PaymentSuccess extends React.Component {
 
   async componentDidMount() {
     await this.refetchOrder();
+    this.startAutotoRefresh();
   }
 
   refetchOrder = async () => {
@@ -42,7 +46,18 @@ export default class PaymentSuccess extends React.Component {
     this.setState({loading: true});
     const result = await request(GQL_HOST, ORDER_QUERY, {orderId: Globals.order.id});
     Globals.order = result.orders[0];
-    this.setState({loading: false});
+    this.setState({loading: false, currentStatus: Globals.order.paymentStatus});
+  }
+
+  startAutotoRefresh = () => {
+    this.setState({silentLoading: true});
+    this.interval = setInterval(async () => {
+      await this.refetchOrder();
+      if (this.state.currentStatus !== Globals.order.paymentStatus) {
+        clearInterval(interval);
+        this.setState({currentStatus: Globals.order.paymentStatus});
+      }
+    }, AUTO_REFRESH);
   }
 
   updatePaymentStatus = async () => {
@@ -64,7 +79,7 @@ export default class PaymentSuccess extends React.Component {
   };
 
   render() {
-    if (this.state.loading)
+    if (this.state.loading && !this.state.silentLoading)
       return (
         <StyleProvider style={getTheme(theme)}>
           <Container>
