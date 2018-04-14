@@ -31,7 +31,6 @@ import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
 import qs from 'qs';
 import {updateStatus, goToCheck} from './actions';
-moment.locale('ru');
 import {
   CLIENT,
   ORDER_QUERY,

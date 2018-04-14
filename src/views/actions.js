@@ -5,6 +5,8 @@ import {request} from 'graphql-request';
 import Globals from '../navigation/globals';
 import {UPDATE_ORDER_QUERY, GQL_HOST, STEND_HOST, SPECIALIST, CLIENT} from './constants';
 
+moment.locale('ru');
+
 
 export const updateStatus = async (status, price) => {
   if (!Globals.order) return;
