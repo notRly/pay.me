@@ -102,7 +102,7 @@ export default class Order extends React.Component {
           phone: order.phone,
           aim: order.aim || order.subjects,
           price: order.price,
-          paymentType: '',
+          paymentType: Globals.paymentType,
         }),
     });
   };

@@ -24,6 +24,7 @@ export default class PaymentType extends React.Component {
   };
 
   goToPayment = paymentType => () => {
+    Globals.paymentType = PAYMENT_TYPES[paymentType];
     if (paymentType === 'CASH') {
       updateStatus(SENDED_PAYMENT_STATUS);
       this.props.navigation.navigate('PaymentSuccess');
