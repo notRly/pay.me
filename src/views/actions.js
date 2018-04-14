@@ -2,6 +2,7 @@ import qs from 'qs';
 import moment from 'moment';
 import 'moment/locale/ru';
 import {request} from 'graphql-request';
+import {AsyncStorage} from 'react-native';
 import Globals from '../navigation/globals';
 import {UPDATE_ORDER_QUERY, GQL_HOST, STEND_HOST, SPECIALIST, CLIENT} from './constants';
 
@@ -15,14 +16,14 @@ export const updateStatus = async (status, price) => {
 
 
 export const saveCardDataToLocalStorage = async (data) => {
-  await AsyncStorage.setItem('CardData', data);
+  await AsyncStorage.setItem('CardData', JSON.stringify(data));
 }
 
 export const getSavedCardFromLocalStorage = async () => {
   try {
     const value = await AsyncStorage.getItem('CardData');
     if (value !== null){
-      return value;
+      return JSON.parse(value);
     }
   } catch (error) {
     return null;

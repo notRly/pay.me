@@ -23,6 +23,7 @@ import Globals from '../navigation/globals';
 import {
     isVaidCreditCard,
     saveCardDataToLocalStorage,
+    getSavedCardFromLocalStorage,
     updateStatus,
 } from './actions';
 
@@ -34,6 +35,14 @@ export default class Payment extends Component {
             number: '',
         }
     };
+  }
+
+  async componentDidMount() {
+    const card = await getSavedCardFromLocalStorage();
+    if (card) {
+     this.setState({card});
+     if (this.cardInput) this.cardInput.setValues(card);
+   }
   }
 
   onChange = e => {
@@ -62,7 +71,7 @@ export default class Payment extends Component {
           typPay = (
             <View>
               <H2 style={styles.title2}>Введите данные вашей карты</H2>
-                <CreditCardInput onChange={this.onChange} />
+                <CreditCardInput ref={(node) => this.cardInput = node} onChange={this.onChange} />
               <Button
                 key={type}
                 block

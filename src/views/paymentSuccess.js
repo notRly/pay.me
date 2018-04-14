@@ -49,6 +49,10 @@ export default class PaymentSuccess extends React.Component {
     this.startAutotoRefresh();
   }
 
+  async componentDidUnmount() {
+    clearInterval(this.interval);
+  }
+
   refetchOrder = async () => {
     if (!Globals.order) return;
     this.setState({loading: true});
