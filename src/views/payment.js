@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {CreditCardInput} from 'react-native-credit-card-input-new';
+import {CreditCardInput} from 'react-native-credit-card-input-newpay';
 import {
     PAYMENT_TYPES, 
     SPECIALIST,
