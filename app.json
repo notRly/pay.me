@@ -4,7 +4,7 @@
     "name": "pay.me",
     "slug": "pay-me",
     "description": "profi.ru payment service",
-    "version": "0.2",
+    "version": "0.4",
     "githubUrl": "https://github.com/notRly/pay.me",
     "orientation": "portrait",
     "privacy": "public",
