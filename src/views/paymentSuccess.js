@@ -38,7 +38,7 @@ export default class PaymentSuccess extends React.Component {
     if (Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS)
       return ORDER_TITLE(params);
 
-    return 'Заказ №' + Globals.order && Globals.order.id;
+    return {title: 'Заказ №' + Globals.order && Globals.order.id};
   }
 
   async componentDidMount() {
