@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {StyleSheet} from 'react-native';
-
+import Globals from '../navigation/globals';
 import {
   StyleProvider,
   Button,
