@@ -49,7 +49,7 @@ export default class PaymentSuccess extends React.Component {
     this.startAutotoRefresh();
   }
 
-  async componentDidUnmount() {
+  async componentWillUnmount() {
     clearInterval(this.interval);
   }
 
