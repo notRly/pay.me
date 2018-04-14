@@ -1,5 +1,6 @@
 import qs from 'qs';
 import moment from 'moment';
+import 'moment/locale/ru';
 import {request} from 'graphql-request';
 import Globals from '../navigation/globals';
 import {UPDATE_ORDER_QUERY, GQL_HOST, STEND_HOST, SPECIALIST, CLIENT} from './constants';
@@ -53,7 +54,7 @@ export const goToCheck = (navigation) => {
           phone: order.phone,
           aim: order.aim || order.subjects,
           price: order.price,
-          paymentType: '',
+          paymentType: Globals.paymentType,
         }),
     });
   };
