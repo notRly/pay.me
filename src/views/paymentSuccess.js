@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Globals from '../navigation/globals';
-import qs from 'qs';
+import {Image} from 'react-native';
 import {
   StyleProvider,
   Spinner,
@@ -34,9 +34,10 @@ export default class PaymentSuccess extends React.Component {
   state = {loading: true, silentLoading: false, currentStatus: null};
   interval = null;
 
-  static navigationOptions = (params) => Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
-   ? ORDER_TITLE(params)
-   : 'Заказ №' + Globals.order && Globals.order.id;
+  static navigationOptions = params =>
+    Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
+      ? ORDER_TITLE(params)
+      : 'Заказ №' + Globals.order && Globals.order.id;
 
   async componentDidMount() {
     await this.refetchOrder();
@@ -46,10 +47,12 @@ export default class PaymentSuccess extends React.Component {
   refetchOrder = async () => {
     if (!Globals.order) return;
     this.setState({loading: true});
-    const result = await request(GQL_HOST, ORDER_QUERY, {orderId: Globals.order.id});
+    const result = await request(GQL_HOST, ORDER_QUERY, {
+      orderId: Globals.order.id,
+    });
     Globals.order = result.orders[0];
     this.setState({loading: false, currentStatus: Globals.order.paymentStatus});
-  }
+  };
 
   startAutotoRefresh = () => {
     this.setState({silentLoading: true});
@@ -60,13 +63,35 @@ export default class PaymentSuccess extends React.Component {
         this.setState({currentStatus: Globals.order.paymentStatus});
       }
     }, AUTO_REFRESH);
-  }
+  };
 
   updatePaymentStatus = async () => {
     this.setState({loading: true});
     await updateStatus(RECEIVED_PAYMENT_STATUS);
     await this.refetchOrder();
-  }
+  };
+
+  goToCheck = () => {
+    const {navigate} = this.props.navigation;
+    const {order} = Globals;
+    navigate('Browser', {
+      url:
+        STEND_HOST +
+        '/getcheck?' +
+        qs.stringify({
+          orderId: order.id,
+          date: moment(order.receivd)
+            .lang('ru')
+            .format('LLL'),
+          specialist: (order.executor || {}).name,
+          inn: '7804034404',
+          phone: order.phone,
+          aim: order.aim || order.subjects,
+          price: order.price,
+          paymentType: '',
+        }),
+    });
+  };
 
   gotCash = () => {
     ActionSheet.show(
@@ -100,7 +125,7 @@ export default class PaymentSuccess extends React.Component {
       return (
         <StyleProvider style={getTheme(theme)}>
           <Container>
-            <Content>
+            <Content style={styles.content}>
               <Card>
                 <H2 style={styles.title2}>Заказ не найден</H2>
               </Card>
@@ -110,16 +135,27 @@ export default class PaymentSuccess extends React.Component {
       );
 
     if (Globals.version === CLIENT) {
-      switch(Globals.order.paymentStatus) {
+      switch (Globals.order.paymentStatus) {
         case SENDED_PAYMENT_STATUS: {
           return (
             <StyleProvider style={getTheme(theme)}>
               <Container>
-                <Content>
+                <Content style={styles.content}>
                   <Text style={styles.title2}>Заказ оплачен!</Text>
+                  <Image
+                    source={require('../../assets/apple.gif')}
+                    style={{
+                      marginTop: 20,
+                      marginBottom: -20,
+                      height: 168,
+                      width: 300,
+                      flex: 1,
+                      alignSelf: 'center',
+                    }}
+                  />
                   <Text style={styles.textEmail}>
-                    После подтверждения специалистом оплаты,
-                    вам будет отправлена квитанция.
+                    После подтверждения специалистом оплаты, вам будет
+                    отправлена квитанция.
                   </Text>
                 </Content>
               </Container>
@@ -131,7 +167,7 @@ export default class PaymentSuccess extends React.Component {
           return (
             <StyleProvider style={getTheme(theme)}>
               <Container>
-                <Content>
+                <Content style={styles.content}>
                   <Text style={styles.title2}>Заказ оплачен!</Text>
                   <Text style={styles.textEmail}>
                     Вам в почту отправлено письмо с квитанцией об оплате заказа.
@@ -147,16 +183,17 @@ export default class PaymentSuccess extends React.Component {
       }
     }
 
-
     if (Globals.version === SPECIALIST) {
-      switch(Globals.order.paymentStatus) {
+      switch (Globals.order.paymentStatus) {
         case REQUEST_PAYMENT_STATUS: {
           return (
             <StyleProvider style={getTheme(theme)}>
               <Container>
-                <Content>
+                <Content style={styles.content}>
                   <Text style={styles.title2}>Счёт отправлен клиенту</Text>
-                  <Text style={styles.textEmail}>Клиенту отправлено СМС со ссылкой на оплату.</Text>
+                  <Text style={styles.textEmail}>
+                    Клиенту отправлено СМС со ссылкой на оплату.
+                  </Text>
                   <Button transparent onPress={this.gotCash}>
                     <Text>Вы получили оплату наличными?</Text>
                   </Button>
@@ -170,9 +207,11 @@ export default class PaymentSuccess extends React.Component {
           return (
             <StyleProvider style={getTheme(theme)}>
               <Container>
-                <Content>
+                <Content style={styles.content}>
                   <Text style={styles.title2}>Заказ оплачен!</Text>
-                  <Text style={styles.textEmail}>Клиент запросил подтверждение оплаты.</Text>
+                  <Text style={styles.textEmail}>
+                    Клиент запросил подтверждение оплаты.
+                  </Text>
                   <Button onPress={this.updatePaymentStatus}>
                     <Text>Оплата получена</Text>
                   </Button>
@@ -189,8 +228,8 @@ export default class PaymentSuccess extends React.Component {
                 <Content>
                   <Text style={styles.title2}>Заказ оплачен!</Text>
                   <Text style={styles.textEmail}>
-                    Вы подтвердили, что клиент оплатил работу
-                    наличными. Заказ завершён.
+                    Вы подтвердили, что клиент оплатил работу наличными. Заказ
+                    завершён.
                   </Text>
                 </Content>
               </Container>
@@ -198,11 +237,9 @@ export default class PaymentSuccess extends React.Component {
           );
         }
       }
-
     }
   }
 }
-
 
 const styles = StyleSheet.create({
   title2: {
@@ -213,5 +250,9 @@ const styles = StyleSheet.create({
   textEmail: {
     marginTop: 20,
     fontSize: 15,
-  }
+  },
+  content: {
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
 });
