@@ -37,7 +37,7 @@ export default class Payment extends Component {
   }
 
   onChange = e => {
-    const {cvc, expiry, name, number, type} = e.values;
+    const {number} = e.values;
     this.setState({
         card: {
             number: number,
