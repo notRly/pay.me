@@ -31,11 +31,8 @@ export const getSavedCardFromLocalStorage = async () => {
 
 export const isVaidCreditCard = (card) => {
   const {number} = card;
-  const isNum = number.split(' ')
-    .map(i => i.length === 4 && /\d{0,4}/.test(i) ? i : null)
-    .filter(Boolean).length === 4;
-  
-  return isNum;
+  const cardNum = number.split(' ').join('');
+  return cardNum.length >= 16 && /\d{0,16}/.test(cardNum);
 }
 
 export const goToCheck = (navigation) => {
