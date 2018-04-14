@@ -70,7 +70,7 @@ export default class Order extends React.Component {
   };
 
   updatePrice = () => {
-    if (Globals.order.paymentStatus === REQUEST_PAYMENT_STATUS)
+    if (Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS)
       this.setState({price: Globals.order.paymentPrice && '' + Globals.order.paymentPrice});
   };
 
@@ -85,7 +85,7 @@ export default class Order extends React.Component {
 
   goToRequestPayment = () => {
     const {navigate} = this.props.navigation;
-    navigate('Payment', {paymentType: 'CARD_TO_CARD'});
+    navigate('Payment', {paymentType: 'CARD_TO_CARD', price: this.state.price});
   };
 
   goToCheck = () => {
@@ -248,7 +248,7 @@ export default class Order extends React.Component {
                   value={this.state.price}
                   disabled={
                     this.state.loading ||
-                    paymentStatus === REQUEST_PAYMENT_STATUS
+                    paymentStatus === SENDED_PAYMENT_STATUS
                   }
                   onChangeText={this.onChangePrice}
                 />
@@ -268,6 +268,7 @@ export default class Order extends React.Component {
                 block
                 style={styles.button}
                 onPress={this.goToRequestPayment}
+                disabled={!this.state.price}
               >
                 <Text transparent>Продолжить</Text>
               </Button>

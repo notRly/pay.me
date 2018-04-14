@@ -87,13 +87,14 @@ export default class Payment extends Component {
   };
 
   goToPayment = () => {
+    const {state: {params: {price}}} = this.props.navigation;
     if(Globals.version === CLIENT) {
         updateStatus(SENDED_PAYMENT_STATUS);
         this.props.navigation.navigate('PaymentSuccess');
         return;
     }
 
-    updateStatus(REQUEST_PAYMENT_STATUS);
+    updateStatus(REQUEST_PAYMENT_STATUS, price);
     this.props.navigation.navigate('PaymentSuccess');
   };
 

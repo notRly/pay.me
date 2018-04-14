@@ -34,10 +34,12 @@ export default class PaymentSuccess extends React.Component {
   state = {loading: true, silentLoading: false, currentStatus: null};
   interval = null;
 
-  static navigationOptions = params =>
-    Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
-      ? ORDER_TITLE(params)
-      : 'Заказ №' + Globals.order && Globals.order.id;
+  static navigationOptions = params => {
+    if (Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS)
+      return ORDER_TITLE(params);
+
+    return 'Заказ №' + Globals.order && Globals.order.id;
+  }
 
   async componentDidMount() {
     await this.refetchOrder();
@@ -59,7 +61,7 @@ export default class PaymentSuccess extends React.Component {
     this.interval = setInterval(async () => {
       await this.refetchOrder();
       if (this.state.currentStatus !== Globals.order.paymentStatus) {
-        clearInterval(interval);
+        clearInterval(this.interval);
         this.setState({currentStatus: Globals.order.paymentStatus});
       }
     }, AUTO_REFRESH);
