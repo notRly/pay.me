@@ -68,7 +68,9 @@ export default class Order extends React.Component {
 
   updatePrice = () => {
     if (Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS)
-      this.setState({price: Globals.order.paymentPrice && '' + Globals.order.paymentPrice});
+      this.setState({
+        price: Globals.order.paymentPrice && '' + Globals.order.paymentPrice,
+      });
   };
 
   updateTitle = () => {
@@ -252,24 +254,26 @@ export default class Order extends React.Component {
                 {!!this.state.price && <Icon name="checkmark-circle" />}
               </Item>
             </View>
-            {paymentStatus === SENDED_PAYMENT_STATUS ? (
-              <Button
-                transparent
-                style={styles.button}
-                onPress={this.applyPayment}
-              >
-                <Text>Подтвердить получение платежа</Text>
-              </Button>
-            ) : (
-              <Button
-                block
-                style={styles.button}
-                onPress={this.goToRequestPayment}
-                disabled={!this.state.price}
-              >
-                <Text transparent>Продолжить</Text>
-              </Button>
-            )}
+            <View style={styles.centerContent}>
+              {paymentStatus === SENDED_PAYMENT_STATUS ? (
+                <Button
+                  success
+                  style={styles.button}
+                  onPress={this.applyPayment}
+                >
+                  <Text>Подтвердить получение платежа</Text>
+                </Button>
+              ) : (
+                <Button
+                  block
+                  style={styles.button}
+                  onPress={this.goToRequestPayment}
+                  disabled={!this.state.price}
+                >
+                  <Text>Продолжить</Text>
+                </Button>
+              )}
+            </View>
           </Content>
         </Container>
       </StyleProvider>
@@ -325,5 +329,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  centerContent: {
+    alignItems: 'center',
+    alignSelf: 'center',
   },
 });
