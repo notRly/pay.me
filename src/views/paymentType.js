@@ -50,7 +50,6 @@ export default class PaymentType extends React.Component {
             <H2 style={styles.title2}>Выберите способ оплаты</H2>
 
             {Object.keys(PAYMENT_TYPES).map(paymentType => {
-              // TODO: впендошить иконку
               if (PAYMENT_TYPES[paymentType] === PAYMENT_TYPES.APPLE_PAY)
                 return (
                   <Button

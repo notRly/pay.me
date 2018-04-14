@@ -35,11 +35,14 @@ export default class PaymentSuccess extends React.Component {
   interval = null;
 
   static navigationOptions = params => {
-    if (Globals.order && Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS)
+    if (
+      Globals.order &&
+      Globals.order.paymentStatus !== RECEIVED_PAYMENT_STATUS
+    )
       return ORDER_TITLE(params);
 
     return {title: 'Заказ №' + Globals.order && Globals.order.id};
-  }
+  };
 
   async componentDidMount() {
     await this.refetchOrder();
@@ -126,17 +129,19 @@ export default class PaymentSuccess extends React.Component {
               <Container>
                 <Content style={styles.content}>
                   <Text style={styles.title2}>Заказ оплачен!</Text>
-                  <Image
-                    source={require('../../assets/apple.gif')}
-                    style={{
-                      marginTop: 20,
-                      marginBottom: -20,
-                      height: 168,
-                      width: 300,
-                      flex: 1,
-                      alignSelf: 'center',
-                    }}
-                  />
+                  {Globals.paymentType == 'Apple pay' && (
+                    <Image
+                      source={require('../../assets/apple.gif')}
+                      style={{
+                        marginTop: 20,
+                        marginBottom: -20,
+                        height: 168,
+                        width: 300,
+                        flex: 1,
+                        alignSelf: 'center',
+                      }}
+                    />
+                  )}
                   <Text style={styles.textEmail}>
                     После подтверждения специалистом оплаты, вам будет
                     отправлена квитанция.
