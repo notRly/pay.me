@@ -58,7 +58,7 @@ export default class PaymentSuccess extends React.Component {
         cancelButtonIndex: 1,
       },
       index => {
-        this.updatePaymentStatus();
+        if (index !== 1) this.updatePaymentStatus();
       },
     );
   };

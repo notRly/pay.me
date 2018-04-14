@@ -71,7 +71,7 @@ export default class Order extends React.Component {
 
   updatePrice = () => {
     if (Globals.order.paymentStatus === REQUEST_PAYMENT_STATUS)
-      this.setState({price: '' + Globals.order.paymentPrice});
+      this.setState({price: Globals.order.paymentPrice && '' + Globals.order.paymentPrice});
   };
 
   updateTitle = () => {
