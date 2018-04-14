@@ -12,7 +12,7 @@ import {Image} from 'react-native';
 import Globals from '../navigation/globals';
 import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
-import {SPECIALIST, CLIENT} from './constants';
+import {SPECIALIST, CLIENT, REQUEST_PAYMENT_STATUS} from './constants';
 
 export default class Demo extends React.Component {
   static navigationOptions = {
@@ -29,6 +29,21 @@ export default class Demo extends React.Component {
     const {navigate} = this.props.navigation;
     navigate('Browser', {url: 'http://profi.ru', back: 'Home'});
   };
+
+  componentDidMount () {
+    const {navigate} = this.props.navigation;
+    setTimeout(() => {
+      if (!Globals.fromDeeplink || !Globals.order) return;
+        Globals.fromDeeplink = false;
+        navigate('Order', {alreadyLoaded: true});
+
+      if (Globals.order.paymentStatus !== REQUEST_PAYMENT_STATUS && Globals.version === 'specialist') {
+        navigate('PaymentSuccess');
+      } else {
+        navigate('Order', {alreadyLoaded: true});
+      }
+    }, 500);
+  }
 
   render() {
     return (
