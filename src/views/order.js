@@ -30,7 +30,7 @@ import getTheme from '../../native-base-theme/components/';
 import theme from '../../native-base-theme/variables/platform';
 import Avatar from './components/avatar';
 import qs from 'qs';
-import {updateStatus} from './actions';
+import {updateStatus, goToCheck} from './actions';
 import moment from 'moment';
 import 'moment/locale/ru';
 moment.locale('ru');
@@ -89,25 +89,7 @@ export default class Order extends React.Component {
   };
 
   goToCheck = () => {
-    const {navigate} = this.props.navigation;
-    const {order} = Globals;
-    navigate('Browser', {
-      url:
-        STEND_HOST +
-        '/getcheck?' +
-        qs.stringify({
-          orderId: order.id,
-          date: moment(order.receivd)
-            .lang('ru')
-            .format('LLL'),
-          specialist: (order.executor || {}).name,
-          inn: '7804034404',
-          phone: order.phone,
-          aim: order.aim || order.subjects,
-          price: order.price,
-          paymentType: '',
-        }),
-    });
+    goToCheck(this.props.navigation);
   };
 
   onChangePrice = price => {

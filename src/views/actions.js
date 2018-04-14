@@ -1,6 +1,8 @@
+import qs from 'qs';
+import moment from 'moment';
 import {request} from 'graphql-request';
 import Globals from '../navigation/globals';
-import {UPDATE_ORDER_QUERY, GQL_HOST, SPECIALIST, CLIENT} from './constants';
+import {UPDATE_ORDER_QUERY, GQL_HOST, STEND_HOST, SPECIALIST, CLIENT} from './constants';
 
 
 export const updateStatus = async (status, price) => {
@@ -43,3 +45,26 @@ export const isVaidCreditCard = (card, version) => {
     ? isCvc && isExpiry && isName && isNum
     : isName && isNum;
 }
+
+export const goToCheck = (navigation) => {
+    const {navigate} = navigation;
+    const {order} = Globals;
+    if (!order) return;
+    navigate('Browser', {
+      url:
+        STEND_HOST +
+        '/getcheck?' +
+        qs.stringify({
+          orderId: order.id,
+          date: moment(order.receivd)
+            .lang('ru')
+            .format('LLL'),
+          specialist: (order.executor || {}).name,
+          inn: '7804034404',
+          phone: order.phone,
+          aim: order.aim || order.subjects,
+          price: order.price,
+          paymentType: '',
+        }),
+    });
+  };
