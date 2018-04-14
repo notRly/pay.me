@@ -165,7 +165,12 @@ export default class PaymentSuccess extends React.Component {
                   <Text style={styles.textEmail}>
                     Вам в почту отправлено письмо с квитанцией об оплате заказа.
                   </Text>
-                  <Button block success onPress={this.goToCheck}>
+                  <Button
+                    block
+                    success
+                    onPress={this.goToCheck}
+                    style={styles.mt}
+                  >
                     <Text>Квитанция об оплате</Text>
                   </Button>
                 </Content>
@@ -187,8 +192,13 @@ export default class PaymentSuccess extends React.Component {
                   <Text style={styles.textEmail}>
                     Клиенту отправлено СМС со ссылкой на оплату.
                   </Text>
-                  <Button transparent onPress={this.gotCash}>
-                    <Text>Вы получили оплату наличными?</Text>
+                  <Button
+                    success
+                    block
+                    style={styles.mt}
+                    onPress={this.gotCash}
+                  >
+                    <Text>Я получил оплату наличными</Text>
                   </Button>
                 </Content>
               </Container>
@@ -243,9 +253,13 @@ const styles = StyleSheet.create({
   textEmail: {
     marginTop: 20,
     fontSize: 15,
+    lineHeight: 20,
   },
   content: {
     padding: 20,
     backgroundColor: '#ffffff',
+  },
+  mt: {
+    marginTop: 20,
   },
 });
