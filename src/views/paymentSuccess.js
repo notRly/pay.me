@@ -20,6 +20,7 @@ import {
   SPECIALIST,
   ORDER_QUERY,
   GQL_HOST,
+  STEND_HOST,
   REQUEST_PAYMENT_STATUS,
   SENDED_PAYMENT_STATUS,
   RECEIVED_PAYMENT_STATUS,
@@ -78,6 +79,28 @@ export default class PaymentSuccess extends React.Component {
     );
   };
 
+  goToCheck = () => {
+    const {navigate} = this.props.navigation;
+    const {order} = Globals;
+    navigate('Browser', {
+      url:
+        STEND_HOST +
+        '/getcheck?' +
+        qs.stringify({
+          orderId: order.id,
+          date: moment(order.receivd)
+            .lang('ru')
+            .format('LLL'),
+          specialist: (order.executor || {}).name,
+          inn: '7804034404',
+          phone: order.phone,
+          aim: order.aim || order.subjects,
+          price: order.price,
+          paymentType: '',
+        }),
+    });
+  };
+
   render() {
     if (this.state.loading && !this.state.silentLoading)
       return (
@@ -103,15 +126,43 @@ export default class PaymentSuccess extends React.Component {
         </StyleProvider>
       );
 
-    if (Globals.version === CLIENT) return (
-      <StyleProvider style={getTheme(theme)}>
-        <Container>
-          <Content>
-            <H2 style={styles.title2}>Сделайте экран клиенту :)</H2>
-          </Content>
-        </Container>
-      </StyleProvider>
-    );
+    if (Globals.version === CLIENT) {
+      switch(Globals.order.paymentStatus) {
+        case SENDED_PAYMENT_STATUS: {
+          return (
+            <StyleProvider style={getTheme(theme)}>
+              <Container>
+                <Content>
+                  <Text style={styles.title2}>Заказ оплачен!</Text>
+                  <Text style={styles.textEmail}>
+                    После подтверждения специалистом оплаты,
+                    вам будет отправлена квитанция.
+                  </Text>
+                </Content>
+              </Container>
+            </StyleProvider>
+          );
+        }
+
+        case RECEIVED_PAYMENT_STATUS: {
+          return (
+            <StyleProvider style={getTheme(theme)}>
+              <Container>
+                <Content>
+                  <Text style={styles.title2}>Заказ оплачен!</Text>
+                  <Text style={styles.textEmail}>
+                    Вам в почту отправлено письмо с квитанцией об оплате заказа.
+                  </Text>
+                  <Button block success onPress={this.goToCheck}>
+                    <Text>Квитанция об оплате</Text>
+                  </Button>
+                </Content>
+              </Container>
+            </StyleProvider>
+          );
+        }
+      }
+    }
 
 
     if (Globals.version === SPECIALIST) {
